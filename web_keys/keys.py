@@ -18,8 +18,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 #-----------------------
-pc = 'mac' #电脑是win/还是mac  <<<<<<<<<<这里需要修改你电脑是啥
-Win_chromedriver_url = '/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver.exe'
+pc = 'mac' #电脑是win/还是mac  <<<<<<<<<<这里需要修改电脑是啥<<<<<<<<<<<<
+isH5 = 'yes' # 是不是H5界面。填写yes/no。<<<<<<<<<<这里需要修改界面是不是H5<<<<<<<<<<<<
+
+Win_chromedriver_url = '/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver.exe' 
 Mac_chromedriver_url = '/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver'
 #-----------------------
 class Keys:
@@ -32,7 +34,7 @@ class Keys:
     # 打开chrome浏览器
     def start_chrome(self):
 
-        if pc == 'win':
+        if pc == 'win' and isH5 == 'no':
             #### 创建设置浏览器对象(不需要动)####
             self.opt1 = Options()
             #### 禁用沙盒模式(不需要动)(可用可不用，增加兼容性，不兼容可添加)####
@@ -47,7 +49,7 @@ class Keys:
             self.driver.implicitly_wait(10)
             return self.driver
 
-        elif pc == 'mac':
+        elif pc == 'mac' and isH5 == 'no':
             #### 创建设置浏览器对象(不需要动)####
             self.opt1 = Options()
             #### 保持浏览器打开状态(不需要动)####
@@ -58,8 +60,37 @@ class Keys:
             self.driver.implicitly_wait(10)
             return self.driver
 
+        elif pc == 'mac' and isH5 == 'yes':
+            #### 创建设置浏览器对象(不需要动)####
+            self.opt1 = Options()
+            #### 保持浏览器打开状态(不需要动)####
+            self.opt1.add_experimental_option('detach', True)
+            #### 设置H5模式
+            self.opt1.add_experimental_option("mobileEmulation",{"deviceName": "iPhone 15"} )
+            #### 配置启动文件路径，并且使用opt1的设置，启动浏览器####
+            self.driver = webdriver.Chrome(service=Service(Mac_chromedriver_url), options=self.opt1)
+            #### 隐性等待时间配置10s
+            self.driver.implicitly_wait(10)
+            return self.driver
+        elif pc == 'win' and isH5 == 'yes':
+            #### 创建设置浏览器对象(不需要动)####
+            self.opt1 = Options()
+            #### 禁用沙盒模式(不需要动)(可用可不用，增加兼容性，不兼容可添加)####
+            self.opt1.add_argument('--no-sandbox')
+            #### 保持浏览器打开状态(不需要动)####
+            self.opt1.add_experimental_option('detach', True)
+            #### 设置浏览器缩放比例70%####
+            self.opt1.add_argument('--force-device-scale-factor=0.7')
+            #### 设置H5模式
+            self.opt1.add_experimental_option("mobileEmulation", {"deviceName": "iPhone 15"})
+            #### 配置启动文件路径，并且使用opt1的设置，启动浏览器####
+            self.driver = webdriver.Chrome(service=Service(Win_chromedriver_url), options=self.opt1)
+            #### 隐性等待时间配置10s
+            self.driver.implicitly_wait(10)
+            return self.driver
+
         else:
-            print('只能输入：win/mac ，且必须为字符串')
+            print('pc只能输入：win/mac ，isH5只能输入：yes/no且必须为字符串')
 
     # 访问URL
     def open(self,url):
