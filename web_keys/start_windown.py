@@ -1,4 +1,3 @@
-
 import tkinter as tk
 from tkinter import ttk
 import json
@@ -11,6 +10,17 @@ def start_windown_config():
     root.title("自动化测试参数信息选择")
     # 设置窗口大小，这里设置宽度为 500 像素，高度为 400 像素
     root.geometry("500x400")
+
+    # 定义一个标志变量，用于记录窗口是否是通过点击 X 号关闭的
+    is_closed_by_x = False
+
+    def on_close():
+        nonlocal is_closed_by_x
+        is_closed_by_x = True
+        root.destroy()
+
+    # 绑定窗口关闭事件
+    root.protocol("WM_DELETE_WINDOW", on_close)
 
     # 定义一个函数，用于处理提交操作
     def submit():
@@ -38,12 +48,13 @@ def start_windown_config():
                 # 将字典数据以 JSON 格式写入文件
                 json.dump(data, f)
             print("信息已成功保存到 config.json 文件中。")
+            print("准备关闭窗口。")
             root.destroy()  # 关闭窗口
         except Exception as e:
             # 打印具体的异常信息
             print(f"保存信息到配置文件时出现错误: {e}")
 
-    #---------------------选项1------------------------------------
+    # ---------------------选项1------------------------------------
     # 创建一个标签，用于提示用户选择一个选项（电脑是 win 还是 mac）
     option_label = tk.Label(root, text="1.电脑是win还是mac:")
     # 使用 pack 布局管理器将标签放置在主窗口中，并在垂直方向上留出 10 像素的间距
@@ -60,7 +71,7 @@ def start_windown_config():
     # 使用 pack 布局管理器将选择框放置在主窗口中，并在垂直方向上留出 5 像素的间距
     option_menu.pack(pady=5)
 
-    #---------------------选项2------------------------------------
+    # ---------------------选项2------------------------------------
     # 创建一个标签，用于提示用户选择一个选项（项目是否为 H5）
     option_label2 = tk.Label(root, text="2.项目是否为H5")
     # 使用 pack 布局管理器将标签放置在主窗口中，并在垂直方向上留出 10 像素的间距
@@ -76,7 +87,7 @@ def start_windown_config():
     # 使用 pack 布局管理器将选择框放置在主窗口中，并在垂直方向上留出 5 像素的间距
     option_menu.pack(pady=5)
 
-    #---------------------输入框1------------------------------------
+    # ---------------------输入框1------------------------------------
     # 创建一个标签，用于提示用户输入一些文本（备注信息）
     input_label = tk.Label(root, text="输入一些文本备注:")
     # 使用 pack 布局管理器将标签放置在主窗口中，并在垂直方向上留出 10 像素的间距
@@ -87,7 +98,7 @@ def start_windown_config():
     # 使用 pack 布局管理器将输入框放置在主窗口中，并在垂直方向上留出 5 像素的间距
     entry.pack(pady=5)
 
-    #---------------------提交按钮------------------------------------
+    # ---------------------提交按钮------------------------------------
     # 创建一个提交按钮，当用户点击该按钮时会调用 submit 函数
     submit_button = tk.Button(root, text="提交", command=submit)
     # 使用 pack 布局管理器将提交按钮放置在主窗口中，并在垂直方向上留出 20 像素的间距
@@ -96,5 +107,13 @@ def start_windown_config():
     # 启动主事件循环，等待用户操作
     root.mainloop()
 
-##测试 # 请注释
-#start_windown_config()
+    # 判断窗口是否是通过点击 X 号关闭的
+    if is_closed_by_x:
+        print("窗口是通过点击X号关闭的")
+    else:
+        print("窗口不是通过点击X号关闭的,取消运行")
+
+    return is_closed_by_x
+
+# 调用函数
+# start_windown_config()
