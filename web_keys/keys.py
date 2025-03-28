@@ -17,12 +17,41 @@ from selenium.webdriver.chrome.options import Options
 # ####导包#用于管理驱动####
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
-#-----------------------
-pc = 'mac' #电脑是win/还是mac  <<<<<<<<<<这里需要修改电脑是啥<<<<<<<<<<<<
-isH5 = 'yes' # 是不是H5界面。填写yes/no。<<<<<<<<<<这里需要修改界面是不是H5<<<<<<<<<<<<
+import json
 
-Win_chromedriver_url = '/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver.exe' 
+
+#----------#初始参数信息#----------------------
+pc_type = None   #电脑是win/还是mac  <<<<<<<<<<配置文件读取<<<<<<<<<<<<
+is_h5 = None       # 是不是H5界面。填写yes/no。<<<<<<<<<<配置文件读取<<<<<<<<<<<<
+note = None         #其他信息，暂时没用
+
+Win_chromedriver_url = '/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver.exe'
 Mac_chromedriver_url = '/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver'
+
+
+#----------#去配置文件读取参数#----------------------
+try:
+    # 以读取模式打开配置文件
+    with open('/Users/wang/PycharmProjects/AtouTest_Web/config/start_config.json', 'r') as f:
+        # 加载 JSON 数据到 Python 字典
+        config = json.load(f)
+        # 从字典中获取具体配置项
+        pc_type = config.get('pc_type')
+        is_h5 = config.get('is_h5')
+        note = config.get('note')
+        print('电脑系统：',type(pc_type))
+        print('是否H5:',type(is_h5))
+        print('备注',type(note))
+        print(f"操作系统类型: {pc_type}")
+        print(f"是否H5项目: {is_h5}")
+        print(f"备注信息: {note}")
+except FileNotFoundError:
+    print("error:未找到配置文件，请检查文件路径。")
+except json.JSONDecodeError:
+    print("error:配置文件不是有效的 JSON 格式，请检查文件内容。")
+except Exception as e:
+    print(f"error:读取配置文件时出现其他错误: {e}")
+
 #-----------------------
 class Keys:
 
@@ -34,68 +63,49 @@ class Keys:
     # 打开chrome浏览器
     def start_chrome(self):
 
-        if pc == 'win' and isH5 == 'no':
-            #### 创建设置浏览器对象(不需要动)####
-            self.opt1 = Options()
-            #### 禁用沙盒模式(不需要动)(可用可不用，增加兼容性，不兼容可添加)####
-            self.opt1.add_argument('--no-sandbox')
-            #### 保持浏览器打开状态(不需要动)####
-            self.opt1.add_experimental_option('detach', True)
-            #### 设置浏览器缩放比例70%####
-            self.opt1.add_argument('--force-device-scale-factor=0.7')
-            #### 配置启动文件路径，并且使用opt1的设置，启动浏览器####
-            self.driver = webdriver.Chrome(service=Service(Win_chromedriver_url), options=self.opt1)
-            #### 隐性等待时间配置10s
-            self.driver.implicitly_wait(10)
-            return self.driver
+        if pc_type == 'win':
+            try:
+                #### 创建设置浏览器对象(不需要动)####
+                self.opt1 = Options()
+                #### 禁用沙盒模式(不需要动)(可用可不用，增加兼容性，不兼容可添加)####
+                self.opt1.add_argument('--no-sandbox')
+                #### 保持浏览器打开状态(不需要动)####
+                self.opt1.add_experimental_option('detach', True)
+                #### 设置浏览器缩放比例70%####
+                self.opt1.add_argument('--force-device-scale-factor=0.7')
+                #### 配置启动文件路径，并且使用opt1的设置，启动浏览器####
+                self.driver = webdriver.Chrome(service=Service(Win_chromedriver_url), options=self.opt1)
+                #### 隐性等待时间配置10s
+                self.driver.implicitly_wait(10)
+                return self.driver
+            except Exception as e:
+                print(f"【error:】打开浏览器失败: {e}")
 
-        elif pc == 'mac' and isH5 == 'no':
-            #### 创建设置浏览器对象(不需要动)####
-            self.opt1 = Options()
-            #### 保持浏览器打开状态(不需要动)####
-            self.opt1.add_experimental_option('detach', True)
-            #### 配置启动文件路径，并且使用opt1的设置，启动浏览器####
-            self.driver = webdriver.Chrome(service=Service(Mac_chromedriver_url), options=self.opt1)
-            #### 隐性等待时间配置10s
-            self.driver.implicitly_wait(10)
-            return self.driver
+        elif pc_type == 'mac':
+            try:
+                #### 创建设置浏览器对象(不需要动)####
+                self.opt1 = Options()
+                #### 保持浏览器打开状态(不需要动)####
+                self.opt1.add_experimental_option('detach', True)
+                #### 配置启动文件路径，并且使用opt1的设置，启动浏览器####
+                self.driver = webdriver.Chrome(service=Service(Mac_chromedriver_url), options=self.opt1)
+                #### 隐性等待时间配置10s
+                self.driver.implicitly_wait(10)
+                return self.driver
+            except Exception as e:
+                print(f"【出现错误】打开浏览器失败: {e}")
 
-        elif pc == 'mac' and isH5 == 'yes':
-            #### 创建设置浏览器对象(不需要动)####
-            self.opt1 = Options()
-            #### 保持浏览器打开状态(不需要动)####
-            self.opt1.add_experimental_option('detach', True)
-            #### 设置H5模式
-            self.opt1.add_experimental_option("mobileEmulation",{"deviceName": "iPhone 15"} )
-            #### 配置启动文件路径，并且使用opt1的设置，启动浏览器####
-            self.driver = webdriver.Chrome(service=Service(Mac_chromedriver_url), options=self.opt1)
-            #### 隐性等待时间配置10s
-            self.driver.implicitly_wait(10)
-            return self.driver
-        elif pc == 'win' and isH5 == 'yes':
-            #### 创建设置浏览器对象(不需要动)####
-            self.opt1 = Options()
-            #### 禁用沙盒模式(不需要动)(可用可不用，增加兼容性，不兼容可添加)####
-            self.opt1.add_argument('--no-sandbox')
-            #### 保持浏览器打开状态(不需要动)####
-            self.opt1.add_experimental_option('detach', True)
-            #### 设置浏览器缩放比例70%####
-            self.opt1.add_argument('--force-device-scale-factor=0.7')
-            #### 设置H5模式
-            self.opt1.add_experimental_option("mobileEmulation", {"deviceName": "iPhone 15"})
-            #### 配置启动文件路径，并且使用opt1的设置，启动浏览器####
-            self.driver = webdriver.Chrome(service=Service(Win_chromedriver_url), options=self.opt1)
-            #### 隐性等待时间配置10s
-            self.driver.implicitly_wait(10)
-            return self.driver
+
 
         else:
             print('pc只能输入：win/mac ，isH5只能输入：yes/no且必须为字符串')
 
     # 访问URL
     def open(self,url):
-        self.driver.get(url)
-
+        try:
+            self.driver.get(url)
+        except Exception as e:
+            print(f"打开url失败: {e}")
     # 查找元素，能满足不同场景下的不同元素定位方法
     # def locator(self,by,value):
     #     return self.driver.find_element(by,value)

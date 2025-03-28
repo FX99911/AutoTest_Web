@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 
 from web_keys.keys import Keys
 #######所需变量######
-url = 'http://10.2.5.80:11086/dhmp/index.html#/equipment/equipmentEdit'
+url = 'http://10.2.5.80:11086/dhmp/index.html'
 user = 'administrator'
 pwd = 'asb#1234'
 #######所需变量######
@@ -29,6 +29,7 @@ class Test_login(Keys):   # 一个模块只写一个 # 必须使用Test_开头 �
             self.start_chrome()             # 紧接着第一步，写打开浏览器的操作  打开浏览器就这么固定写
         with allure.step('第二步：打开系统界面'):  ########写步骤2干嘛的（写第二步后边：） 以下操作根第一步一样
             self.open(url)            #  打开url
+            time.sleep(1)
         with allure.step('第三步：输入用户名'):
             self.input(user_input[0],user_input[1],user)
         with allure.step('第四步：输入密码'):
