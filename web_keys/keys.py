@@ -18,21 +18,28 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 import json
+from web_keys.py_variables import get_env_variable
+from montage_url import concatenate_path
 
+#----------#获取环境变量#----------------------
+home = get_env_variable()
 
 #----------#初始参数信息#----------------------
 pc_type = None   #电脑是win/还是mac  <<<<<<<<<<配置文件读取<<<<<<<<<<<<
 is_h5 = None       # 是不是H5界面。填写yes/no。<<<<<<<<<<配置文件读取<<<<<<<<<<<<
 note = None         #其他信息，暂时没用
 
-Win_chromedriver_url = '/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver.exe'
-Mac_chromedriver_url = '/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver'
+#----------#用环境变量 拼接url,#----------------------
 
+Win_chromedriver_url = concatenate_path(home,'config/chromedriver.exe')
+Mac_chromedriver_url = concatenate_path(home,'config/chromedriver')
+config_url = concatenate_path(home,'config/start_config.json')
 
+print('config_url:',config_url)
 #----------#去配置文件读取参数#----------------------
 try:
     # 以读取模式打开配置文件
-    with open('/Users/wang/PycharmProjects/AtouTest_Web/config/start_config.json', 'r') as f:
+    with open(config_url, 'r') as f:
         # 加载 JSON 数据到 Python 字典
         config = json.load(f)
         # 从字典中获取具体配置项
@@ -94,8 +101,6 @@ class Keys:
                 return self.driver
             except Exception as e:
                 print(f"【出现错误】打开浏览器失败: {e}")
-
-
 
         else:
             print('pc只能输入：win/mac ，isH5只能输入：yes/no且必须为字符串')

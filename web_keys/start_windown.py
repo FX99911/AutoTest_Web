@@ -1,7 +1,18 @@
 import tkinter as tk
 from tkinter import ttk
 import json
+from web_keys.py_variables import get_env_variable
+from web_keys.montage_url import concatenate_path
 
+#----------#获取环境变量#----------------------
+home = get_env_variable()
+
+#----------#用环境变量 拼接url,#----------------------
+
+start_config_url = concatenate_path(home,'config/start_config.json')
+
+
+#---------------------------------------------------
 
 def start_windown_config():
     # 创建主窗口对象，这是整个 GUI 应用的基础
@@ -30,8 +41,8 @@ def start_windown_config():
         selected_option2 = option_var2.get()
         # 获取输入框中用户输入的文本（备注信息）
         input_text = entry.get()
-        print(f"选择的选项1: {selected_option}")
-        print(f"选择的选项2: {selected_option2}")
+        print(f"pc还是mac: {selected_option}")
+        print(f"是否H5: {selected_option2}")
         print(f"输入的文本: {input_text}")
 
         # 创建一个字典，用于存储要保存到配置文件中的数据
@@ -44,11 +55,10 @@ def start_windown_config():
             # 尝试以写入模式打开名为 'config.json' 的文件
             # 如果文件不存在，Python 会自动创建它
             # 文件路径如果只写文件名，默认是在当前运行脚本的工作目录下创建
-            with open('/Users/wang/PycharmProjects/AtouTest_Web/config/start_config.json', 'w') as f:
+            with open(start_config_url, 'w') as f:
                 # 将字典数据以 JSON 格式写入文件
                 json.dump(data, f)
             print("信息已成功保存到 config.json 文件中。")
-            print("准备关闭窗口。")
             root.destroy()  # 关闭窗口
         except Exception as e:
             # 打印具体的异常信息
@@ -109,11 +119,11 @@ def start_windown_config():
 
     # 判断窗口是否是通过点击 X 号关闭的
     if is_closed_by_x:
-        print("窗口是通过点击X号关闭的")
+        print("窗口是通过点击X号关闭的,取消运行")
     else:
-        print("窗口不是通过点击X号关闭的,取消运行")
+        print("窗口不是通过点击X号关闭的,继续运行")
 
     return is_closed_by_x
 
 # 调用函数
-# start_windown_config()
+#start_windown_config()

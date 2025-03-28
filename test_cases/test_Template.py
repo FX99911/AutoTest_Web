@@ -15,9 +15,12 @@ user_input = [By.XPATH, '//*[@id="app"]/div/div/div/div[2]/div[1]/form/div[1]/di
 pwd_input = [By.XPATH, '//*[@id="app"]/div/div/div/div[2]/div[1]/form/div[2]/div/div/input']    # 密码输入框
 login_button  = [By.XPATH,'//*[@id="app"]/div/div/div/div[2]/div[1]/form/div[3]/div/button/span/span']  # 登陆按钮
 #### 核心元素<<<< ###
+
 #### 断言元素<<<< ###
 judge_user_name = [By.XPATH,'//*[@id="app"]/div/div[2]/div/div[1]/div[4]/div[2]/a/span'] # 登陆成功后右上角的用户名
+
 ########################
+
 @allure.epic('项目名称：内蒙古DHMP-3000版本') # 根据模板改即可，一个项目的都用这个
 @allure.feature("模块名称：用户登陆模块") #  一个模块用一个名字此文件不用动
 class Test_login(Keys):   # 一个模块只写一个 # 必须使用Test_开头 后边用英文翻译，比如登陆翻译后login

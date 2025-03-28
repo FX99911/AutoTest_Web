@@ -1,7 +1,11 @@
-pytest
+pytest~=8.3.5
 pytest-html
 pytest-xdist
 pytest-ordering
 pytest-rerunfailures
 pytest-base-url
 allure-pytest
+selenium~=4.30.0
+dotenv~=0.9.9
+python-dotenv~=1.1.0
+allure-python-commons~=2.13.5
