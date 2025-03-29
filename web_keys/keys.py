@@ -18,24 +18,22 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 import json
-from web_keys.py_variables import get_env_variable
-from montage_url import concatenate_path
+from web_keys.montage_url import home
 
-#----------#获取环境变量#----------------------
-home = get_env_variable()
+#----------#获取项目根目录#----------------------
+# home = get_project_root_path()
 
 #----------#初始参数信息#----------------------
 pc_type = None   #电脑是win/还是mac  <<<<<<<<<<配置文件读取<<<<<<<<<<<<
 is_h5 = None       # 是不是H5界面。填写yes/no。<<<<<<<<<<配置文件读取<<<<<<<<<<<<
 note = None         #其他信息，暂时没用
 
-#----------#用环境变量 拼接url,#----------------------
+#----------#用根目录拼接目录url,#----------------------
 
-Win_chromedriver_url = concatenate_path(home,'config/chromedriver.exe')
-Mac_chromedriver_url = concatenate_path(home,'config/chromedriver')
-config_url = concatenate_path(home,'config/start_config.json')
+Win_chromedriver_url = f'{home}/config/chromedriver.exe'
+Mac_chromedriver_url = f'{home}/config/chromedriver'
+config_url = f'{home}/config/start_config.json'
 
-print('config_url:',config_url)
 #----------#去配置文件读取参数#----------------------
 try:
     # 以读取模式打开配置文件
@@ -46,9 +44,6 @@ try:
         pc_type = config.get('pc_type')
         is_h5 = config.get('is_h5')
         note = config.get('note')
-        print('电脑系统：',type(pc_type))
-        print('是否H5:',type(is_h5))
-        print('备注',type(note))
         print(f"操作系统类型: {pc_type}")
         print(f"是否H5项目: {is_h5}")
         print(f"备注信息: {note}")
@@ -142,7 +137,7 @@ class Keys:
     def wait(self,_time):
         time.sleep(int(_time))
 
-    #
+    # 获取当前页面标签名
     def title(self):
         return self.driver.title
 

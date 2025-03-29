@@ -1,7 +1,6 @@
 import os
 
-from web_keys.montage_url import concatenate_path
-from web_keys.py_variables import get_env_variable
+from web_keys.montage_url import home
 from web_keys.start_windown import start_windown_config
 import pytest
 import sys
@@ -9,10 +8,10 @@ from web_keys.log_window import LogWindow, StdoutRedirector
 import io
 
 #----------#获取环境变量#----------------------
-home = get_env_variable()
+# 不用
 #----------#用环境变量 拼接url,#----------------------
 
-arrure_report_url = concatenate_path(home,'reports/index.html')
+arrure_report_url = (f'{home}reports/index.html')
 
 
 swc = start_windown_config()
