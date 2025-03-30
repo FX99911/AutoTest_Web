@@ -99,5 +99,5 @@ def excel_variables(file_path):
 
 
 
-
-#excel_variables()
+file_path = 'cases_date/test_excel.xlsx'
+excel_variables(file_path)
