@@ -1,13 +1,17 @@
 import os
 import pandas as pd
 from typing import Dict, List, Union
+from web_keys.montage_url import home
+#####################################################################
+####################【此模块的方法用于读取excel】#########################
+#####################################################################
+
 
 
 # 设置默认基础路径
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "cases_date")
 
 
-# =========================================================
 def read_single_excel(file_path: str) -> Dict[str, List[str]]:
     """
     读取单个Excel文件并返回字典格式的数据
@@ -46,7 +50,6 @@ def read_single_excel(file_path: str) -> Dict[str, List[str]]:
         return {}
 
 
-# =========================================================
 def read_excel_from_fourth_row(file_path: str) -> List[Dict[str, Dict[str, List[str]]]]:
     """
     从Excel的第四行开始读取数据，为每个测试用例生成独立的字典
@@ -113,7 +116,6 @@ def read_excel_from_fourth_row(file_path: str) -> List[Dict[str, Dict[str, List[
         return []
 
 
-# =========================================================
 def create_first_directory(data: Dict[str, List[str]], base_dir: str = BASE_DIR) -> str:
     """
     创建第一级目录，目录名为字典的第一个value
@@ -141,7 +143,6 @@ def create_first_directory(data: Dict[str, List[str]], base_dir: str = BASE_DIR)
         return ""
 
 
-# =========================================================
 def create_second_directory(data: Dict[str, List[str]], parent_dir: str) -> str:
     """
     在父目录下创建第二级目录，目录名为字典的第二个value
@@ -169,7 +170,6 @@ def create_second_directory(data: Dict[str, List[str]], parent_dir: str) -> str:
         return ""
 
 
-# =========================================================
 def create_third_directory(data: Dict[str, List[str]], parent_dir: str) -> str:
     """
     在父目录下创建第三级目录，目录名为字典的第三个value
@@ -197,7 +197,6 @@ def create_third_directory(data: Dict[str, List[str]], parent_dir: str) -> str:
         return ""
 
 
-# =========================================================
 def create_test_files(test_cases: List[Dict[str, Dict[str, List[str]]]], output_dir: str) -> List[str]:
     """
     根据测试用例字典创建对应的Python文件
@@ -242,3 +241,39 @@ test_data = {test_data}
     except Exception as e:
         print(f"创建测试文件时发生错误: {str(e)}")
         return []
+
+
+# 使用示例
+if __name__ == "__main__":
+    # 文件目录
+    excel_url = f"{home}/cases_date/test_excel.xlsx"
+
+    # 读取Excel文件（前两行）
+    data = read_single_excel(excel_url)
+    print("Excel前两行数据:")
+    print(data)
+
+    # 读取Excel文件（从第四行开始）
+    data_from_fourth = read_excel_from_fourth_row(excel_url)
+    print("\nExcel从第四行开始的数据:")
+    for test_case in data_from_fourth:
+        print(test_case)
+        print()  # 添加空行分隔不同的测试用例
+
+    # 创建第一级目录（使用默认的BASE_DIR）
+    first_dir = create_first_directory(data)
+    print(f"\n第一级目录路径: {first_dir}")
+
+    # 创建第二级目录
+    second_dir = create_second_directory(data, first_dir)
+    print(f"第二级目录路径: {second_dir}")
+
+    # 创建第三级目录
+    third_dir = create_third_directory(data, second_dir)
+    print(f"第三级目录路径: {third_dir}")
+
+    # 在第三级目录中创建测试文件
+    created_files = create_test_files(data_from_fourth, third_dir)
+    print("\n创建的文件列表:")
+    for file_path in created_files:
+        print(file_path)

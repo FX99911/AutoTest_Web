@@ -2,6 +2,11 @@ import os
 import pandas as pd
 from typing import Dict, List, Union
 from web_keys.montage_url import home
+#####################################################################
+####################【此模块的方法用于读取excel】#########################
+#####################################################################
+
+
 
 # 设置默认基础路径
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "cases_date")
