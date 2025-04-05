@@ -1,16 +1,4 @@
-/*
 .side-nav__brand {
-  background: url('log.jpg') no-repeat left center !important;
+  background: url('custom-logo.svg') no-repeat left center !important;
   margin-left: 10px;
-}
-*/
-
-.side-nav__brand {
-  background: url('log.jpg') no-repeat left center !important;
-  margin-left: 50px;
-  height: 20px;
-  background-size: contain !important;
-}
-.side-nav__brand-text{
-  display: none;
 }

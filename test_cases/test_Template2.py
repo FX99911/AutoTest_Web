@@ -41,8 +41,8 @@ judge_user_name = [By.XPATH,''] # 登陆成功后右上角的用户名
 @allure.feature(f"模块名称：{test_module_name}") #  一个模块用一个名字此文件不用动
 class Test_login(Keys):   # 一个模块只写一个 # 必须使用Test_开头 后边用英文翻译，比如登陆翻译后login
 
-    @allure.story(f'测试用例：{case_name}')  # 写用例的名字
-    #@allure.title('测试用例名：正确-账号密码-登陆')   #更下一集  >>>>>每条用例从这里开始<<<<
+    @allure.story(f'测试用例：{case_name}')  # 写用例的测试点名字
+    @allure.title('测试用例名：正确-账号密码-登陆')   #更下一集  >>>>>每条用例从这里开始<<<<
     def test_login(self):                    #这个就是定义一个方法(用例)，换用例只需要修改test_login 中的login也用翻译
         with allure.step('第一步：打开浏览器'):  ########写步骤1干嘛的（写第一步后边：） 比如打开浏览器（固定写法）
             self.start_chrome()             # 紧接着第一步，写打开浏览器的操作  打开浏览器就这么固定写

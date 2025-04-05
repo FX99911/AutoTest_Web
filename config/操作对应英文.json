@@ -1,0 +1,21 @@
+{
+    "项目名称": "project_name",
+    "测试一级目录模块": "test_module",
+    "测试用例名称": "case_name",
+    "前置条件": "preconditions",
+    "打开URL": "open_url",
+    "输入信息": "input_txt",
+    "获取内容": "get_text",
+    "刷新页面": "refresh",
+    "关闭当前窗口": "close",
+    "点击": "click",
+    "返回上一页": "back",
+    "返回下一页": "forward",
+    "获取当前页面标题": "title",
+    "截图当前界面": "take_screenshot",
+    "退出浏览器": "quit",
+    "提示框确定": "accept_alert",
+    "提示框取消": "dismiss_alert",
+    "鼠标悬停": "hover",
+    "获取当前页面URL": "get_current_url"
+}
