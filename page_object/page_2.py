@@ -1,7 +1,5 @@
-import time
-
 from selenium.webdriver.common.by import By
-from web_keys.keys import Keys
+from web_keys.seleniuum_device.keys import Keys
 
 '''
 这是一个测试类（模板）

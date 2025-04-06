@@ -1,9 +1,8 @@
 import time
 
 import allure
-import pytest
 from selenium.webdriver.common.by import By
-from web_keys.keys import Keys
+from web_keys.seleniuum_device.keys import Keys
 
 
 def convert_by_string(lst):

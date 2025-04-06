@@ -1,7 +1,7 @@
 import os
 import pandas as pd
-from typing import Dict, List, Union
-from web_keys.montage_url import home
+from typing import Dict, List
+from web_keys.environment_info.montage_url import home
 #####################################################################
 ####################【此模块的方法用于读取excel】#########################
 #####################################################################
@@ -23,8 +23,8 @@ def read_single_excel(file_path: str) -> Dict[str, List[str]]:
         Dict[str, List[str]]: 字典格式的数据，键为第一行标题，值为第二行内容
 
     Example:
-        >>> data = read_single_excel("example.xlsx")
-        >>> print(data)
+        # >>> data = read_single_excel("example.xlsx")
+        # >>> print(data)
         {'标题1': ['内容1'], '标题2': ['内容2']}
     """
     try:
@@ -243,37 +243,37 @@ test_data = {test_data}
         return []
 
 
-# 使用示例
-if __name__ == "__main__":
-    # 文件目录
-    excel_url = f"{home}/cases_date/test_excel.xlsx"
-
-    # 读取Excel文件（前两行）
-    data = read_single_excel(excel_url)
-    print("Excel前两行数据:")
-    print(data)
-
-    # 读取Excel文件（从第四行开始）
-    data_from_fourth = read_excel_from_fourth_row(excel_url)
-    print("\nExcel从第四行开始的数据:")
-    for test_case in data_from_fourth:
-        print(test_case)
-        print()  # 添加空行分隔不同的测试用例
-
-    # 创建第一级目录（使用默认的BASE_DIR）
-    first_dir = create_first_directory(data)
-    print(f"\n第一级目录路径: {first_dir}")
-
-    # 创建第二级目录
-    second_dir = create_second_directory(data, first_dir)
-    print(f"第二级目录路径: {second_dir}")
-
-    # 创建第三级目录
-    third_dir = create_third_directory(data, second_dir)
-    print(f"第三级目录路径: {third_dir}")
-
-    # 在第三级目录中创建测试文件
-    created_files = create_test_files(data_from_fourth, third_dir)
-    print("\n创建的文件列表:")
-    for file_path in created_files:
-        print(file_path)
+# # 使用示例
+# if __name__ == "__main__":
+#     # 文件目录
+#     excel_url = f"{home}/cases_date/test_excel.xlsx"
+#
+#     # 读取Excel文件（前两行）
+#     data = read_single_excel(excel_url)
+#     print("Excel前两行数据:")
+#     print(data)
+#
+#     # 读取Excel文件（从第四行开始）
+#     data_from_fourth = read_excel_from_fourth_row(excel_url)
+#     print("\nExcel从第四行开始的数据:")
+#     for test_case in data_from_fourth:
+#         print(test_case)
+#         print()  # 添加空行分隔不同的测试用例
+#
+#     # 创建第一级目录（使用默认的BASE_DIR）
+#     first_dir = create_first_directory(data)
+#     print(f"\n第一级目录路径: {first_dir}")
+#
+#     # 创建第二级目录
+#     second_dir = create_second_directory(data, first_dir)
+#     print(f"第二级目录路径: {second_dir}")
+#
+#     # 创建第三级目录
+#     third_dir = create_third_directory(data, second_dir)
+#     print(f"第三级目录路径: {third_dir}")
+#
+#     # 在第三级目录中创建测试文件
+#     created_files = create_test_files(data_from_fourth, third_dir)
+#     print("\n创建的文件列表:")
+#     for file_path in created_files:
+#         print(file_path)

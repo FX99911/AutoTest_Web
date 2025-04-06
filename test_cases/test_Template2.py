@@ -1,8 +1,7 @@
 import time
 import allure
-import pytest
 from selenium.webdriver.common.by import By
-from web_keys.keys import Keys
+from web_keys.seleniuum_device.keys import Keys
 from web_keys.open_excel_data import excel_variables
 
 cases_url = 'cases_date/test_excel.xlsx'

@@ -26,19 +26,16 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 import json
-from web_keys.montage_url import home
+from web_keys.environment_info.montage_url import home
 
 # ####导入常用的Selenium辅助模块####
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import (
     TimeoutException,
-    NoSuchElementException,
-    ElementClickInterceptedException,
-    StaleElementReferenceException
+    NoSuchElementException
 )
 
 # ----------#获取项目根目录#----------------------

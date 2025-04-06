@@ -15,7 +15,7 @@ from tkinter import ttk, filedialog, messagebox
 import json
 import os
 import shutil
-from web_keys.montage_url import home
+from web_keys.environment_info.montage_url import home
 
 
 def get_start_config_url():

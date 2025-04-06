@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from web_keys.keys import Keys
+from web_keys.seleniuum_device.keys import Keys
 
 keys = Keys()
 

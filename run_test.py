@@ -1,10 +1,10 @@
 import os
 
-from web_keys.montage_url import home
-from web_keys.start_windown import start_windown_config
+from web_keys.environment_info.montage_url import home
+from web_keys.windown.start_windown import start_windown_config
 import pytest
 import sys
-from web_keys.log_window import LogWindow, StdoutRedirector
+from web_keys.windown.log_window import LogWindow, StdoutRedirector
 import io
 
 #----------#获取环境变量#----------------------
