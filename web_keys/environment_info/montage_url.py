@@ -4,7 +4,7 @@ import os
 def get_project_root_path():
     # 获取当前脚本的绝对路径
     current_script_path = os.path.abspath(__file__)
-    print(f'当前绝对路径：{current_script_path}')
+    # print(f'当前绝对路径：{current_script_path}')
     # 项目根目录的名称
     project_root_name = "AtouTest_Web"
 

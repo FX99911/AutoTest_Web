@@ -2,13 +2,23 @@ import time
 import allure
 from selenium.webdriver.common.by import By
 from web_keys.seleniuum_device.keys import Keys
-from web_keys.open_excel_data import excel_variables
+from web_keys.read_excel.dist_to_variable import convert_dict_to_variables
 
-cases_url = 'cases_date/test_excel.xlsx'
-data_dict = excel_variables(cases_url)
-print(data_dict)
+# 测试用例数据
+# Excel前两行数据
+first_two_rows = {'项目名称': ['测试的项目'], '模块名称': ['首页'], '测试点': ['登陆'], 'nan': ['nan']}
+
+# 测试步骤数据
+test_data = {'打开_浏览器': ['yes', 'nan', 'nan'], '打开_url_登录': ['https://adminplus.iviewui.com/', 'nan', 'nan'], '输入_用户名': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[1]/div/div/div/input', 'admin'], '输入_密码': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[2]/div/div/div/input', 'admin'], '点击_登录按钮': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[4]/button', 'nan'], '断言': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[4]/button', '登陆成功']}
+
+# 后续可以在这里添加测试逻辑
 
 #######所需变量######
+
+project_nam=first_two_rows
+test_module	测试一级目录模块
+case_name	测试用例名称
+
 try:
     project_name = data_dict['project_name']
     test_module_name = data_dict['test_module']

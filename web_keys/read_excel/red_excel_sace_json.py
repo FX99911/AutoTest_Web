@@ -2,14 +2,15 @@ import os
 import pandas as pd
 from typing import Dict, List
 from web_keys.environment_info.montage_url import home
+
 #####################################################################
 ####################【此模块的方法用于读取excel】#########################
 #####################################################################
 
 
-
-# 设置默认基础路径
-BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "cases_date")
+# 设置默认基础路径(存放测试用例的路径)
+BASE_DIR = f'{home}/cases_date'
+print("--测试用例保存路径 = ", BASE_DIR)
 
 
 def read_single_excel(file_path: str) -> Dict[str, List[str]]:
@@ -197,16 +198,18 @@ def create_third_directory(data: Dict[str, List[str]], parent_dir: str) -> str:
         return ""
 
 
-def create_test_files(test_cases: List[Dict[str, Dict[str, List[str]]]], output_dir: str) -> List[str]:
+def create_test_files(test_cases: List[Dict[str, Dict[str, List[str]]]], output_dir: str,
+                      first_two_rows: Dict[str, List[str]]) -> List[str]:
     """
-    根据测试用例字典创建对应的Python文件
+    根据测试用例字典创建对应的Python文件，如果文件已存在则只更新数据部分
 
     Args:
         test_cases (List[Dict[str, Dict[str, List[str]]]]): 测试用例字典列表
         output_dir (str): 输出目录路径
+        first_two_rows (Dict[str, List[str]]): Excel前两行的数据
 
     Returns:
-        List[str]: 创建的文件路径列表
+        List[str]: 创建或更新的文件路径列表
     """
     created_files = []
     try:
@@ -223,9 +226,48 @@ def create_test_files(test_cases: List[Dict[str, Dict[str, List[str]]]], output_
             # 获取测试用例数据（字典的value）
             test_data = test_case[test_name]
 
-            # 创建文件内容
-            content = f"""# 测试用例数据
-test_data = {test_data}
+            # 格式化项目信息
+            formatted_project_info = "{\n"
+            for key, value in first_two_rows.items():
+                formatted_project_info += f"    '{key}': {value},\n"
+            formatted_project_info = formatted_project_info.rstrip(',\n') + "\n}"
+
+            # 格式化操作步骤
+            formatted_operation_steps = "{\n"
+            for key, value in test_data.items():
+                formatted_operation_steps += f"    '{key}': {value},\n"
+            formatted_operation_steps = formatted_operation_steps.rstrip(',\n') + "\n}"
+
+            # 检查文件是否存在
+            if os.path.exists(file_path):
+                # 读取现有文件内容
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+
+                # 使用正则表达式替换数据部分
+                import re
+                # 替换项目信息
+                content = re.sub(
+                    r'project_info = {.*?}',
+                    f'project_info = {formatted_project_info}',
+                    content,
+                    flags=re.DOTALL
+                )
+                # 替换操作步骤
+                content = re.sub(
+                    r'operation_steps = {.*?}',
+                    f'operation_steps = {formatted_operation_steps}',
+                    content,
+                    flags=re.DOTALL
+                )
+            else:
+                # 创建新文件内容
+                content = f"""# 测试用例数据
+# 项目信息
+project_info = {formatted_project_info}
+
+# 操作步骤
+operation_steps = {formatted_operation_steps}
 
 # 后续可以在这里添加测试逻辑
 """
@@ -235,45 +277,46 @@ test_data = {test_data}
                 f.write(content)
 
             created_files.append(file_path)
-            print(f"已创建文件: {file_path}")
+            print(f"{'更新' if os.path.exists(file_path) else '创建'}文件: {file_path}")
 
         return created_files
     except Exception as e:
-        print(f"创建测试文件时发生错误: {str(e)}")
+        print(f"处理测试文件时发生错误: {str(e)}")
         return []
 
 
-# # 使用示例
-# if __name__ == "__main__":
-#     # 文件目录
-#     excel_url = f"{home}/cases_date/test_excel.xlsx"
-#
-#     # 读取Excel文件（前两行）
-#     data = read_single_excel(excel_url)
-#     print("Excel前两行数据:")
-#     print(data)
-#
-#     # 读取Excel文件（从第四行开始）
-#     data_from_fourth = read_excel_from_fourth_row(excel_url)
-#     print("\nExcel从第四行开始的数据:")
-#     for test_case in data_from_fourth:
-#         print(test_case)
-#         print()  # 添加空行分隔不同的测试用例
-#
-#     # 创建第一级目录（使用默认的BASE_DIR）
-#     first_dir = create_first_directory(data)
-#     print(f"\n第一级目录路径: {first_dir}")
-#
-#     # 创建第二级目录
-#     second_dir = create_second_directory(data, first_dir)
-#     print(f"第二级目录路径: {second_dir}")
-#
-#     # 创建第三级目录
-#     third_dir = create_third_directory(data, second_dir)
-#     print(f"第三级目录路径: {third_dir}")
-#
-#     # 在第三级目录中创建测试文件
-#     created_files = create_test_files(data_from_fourth, third_dir)
-#     print("\n创建的文件列表:")
-#     for file_path in created_files:
-#         print(file_path)
+# 使用示例
+if __name__ == "__main__":
+    # 文件目录
+    excel_url = f"{home}/cases_date/test_excel.xlsx"
+
+    # 读取Excel文件（前两行）
+    data = read_single_excel(excel_url)
+    print("Excel前两行数据:")
+    print(data)
+
+    # 读取Excel文件（从第四行开始）
+    data_from_fourth = read_excel_from_fourth_row(excel_url)
+    print("\nExcel从第四行开始的数据:")
+    for test_case in data_from_fourth:
+        print(test_case)
+        print()  # 添加空行分隔不同的测试用例
+
+    # 创建第一级目录（使用默认的BASE_DIR）
+    first_dir = create_first_directory(data)
+    print(f"\n第一级目录路径: {first_dir}")
+
+    # 创建第二级目录
+    second_dir = create_second_directory(data, first_dir)
+    print(f"第二级目录路径: {second_dir}")
+
+    # 创建第三级目录
+    third_dir = create_third_directory(data, second_dir)
+    print(f"第三级目录路径: {third_dir}")
+
+    # 在第三级目录中创建测试文件
+    created_files = create_test_files(data_from_fourth, third_dir, data)
+    print("\n创建的文件列表:")
+    for file_path in created_files:
+        print(file_path)
+
