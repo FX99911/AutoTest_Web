@@ -91,3 +91,4 @@ if __name__ == "__main__":
     all_steps = get_all_steps(test_data)
     for step in all_steps:
         print(step)
+        print(type(step))

@@ -1,7 +1,7 @@
 import time
 import allure
 from web_keys.seleniuum_device.keys import Keys
-from web_keys.read_excel.dist_to_variable import convert_dict_to_variables
+from web_keys.read_excel.dist_to_variable import convert_dict_to_variables, get_all_steps
 from web_keys.template_method.get_now_file_name import get_now_file_name
 
 # 测试用例数据
@@ -31,26 +31,27 @@ test_points = project_info['测试点'][0]
 cases_name = get_now_file_name()
 
 
-# 步骤变量定义
-all_steps = convert_dict_to_variables(operation_steps)
-print('===========================测试步骤变量如下========================================')
-print(all_steps)  #示例
-# step1 = ['打开_浏览器', 'no', 'nan', 'nan']
-# step2 = ['打开_url_登录', 'https://adminplus.iviewui.com/', 'nan', 'nan']
-print('===========================测试步骤变量如上========================================')
-
+# # 步骤变量定义(暂时不需要)
+# all_steps = convert_dict_to_variables(operation_steps)
+# print('===========================测试步骤变量如下========================================')
+# print(all_steps)  #示例
+# # step1 = ['打开_浏览器', 'no', 'nan', 'nan']
+# # step2 = ['打开_url_登录', 'https://adminplus.iviewui.com/', 'nan', 'nan']
+# print('===========================测试步骤变量如上========================================')
+# 获取列表
+all_steps = get_all_steps(operation_steps)
 # =====================以下是测试用例模板====================
 
 ########################
 
-@allure.epic(f'项目名称：{project_name}') # 根据模板改即可，一个项目的都用这个
-@allure.feature(f"模块名称：{test_module}") #  一个模块用一个名字此文件不用动
+@allure.epic(f'项目名称：{project_name}')
+@allure.feature(f"模块名称：{test_module}")
 @allure.description('说明：这是一个说明描述，描述写这里') # 描述
 
 class Test_Template(Keys):
 
-    @allure.story(f'测试点：{test_points}')  # 写用例的测试点名字
-    @allure.title(f'测试用例名：{cases_name}')   #测试用例名字 >>>>>每条用例从这里开始<<<<
+    @allure.story(f'测试点：{test_points}')
+    @allure.title(f'测试用例名：{cases_name}')
     @allure.link(url='http://www.baidu.com', name='这是一个链接')
 
     def test_execute(self):                    #这个就是定义一个(用例)，test_开头
@@ -84,7 +85,4 @@ class Test_Template(Keys):
 
 
 
-
-TEST = Test_Template
-TEST.test_execute()
 
