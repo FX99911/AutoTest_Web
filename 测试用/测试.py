@@ -3,6 +3,7 @@ import allure
 from web_keys.seleniuum_device.keys import Keys
 from web_keys.read_excel.dist_to_variable import convert_dict_to_variables, get_all_steps
 from web_keys.template_method.get_now_file_name import get_now_file_name
+from web_keys.read_excel.modify_excel_dict import convert_by_string ,convert_dict
 
 # 测试用例数据
 # 项目信息
@@ -12,15 +13,17 @@ project_info = {
     '测试点': ['登陆'],
     'nan': ['nan']
 }
+
 # 操作步骤
 operation_steps = {
-    '打开_浏览器': ['no', 'nan', 'nan'],
+    '打开_浏览器': ['yes', 'nan', 'nan'],
     '打开_url_登录': ['https://adminplus.iviewui.com/', 'nan', 'nan'],
     '输入_用户名': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[1]/div/div/div/input', 'admin'],
     '输入_密码': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[2]/div/div/div/input', 'admin'],
     '点击_登录按钮': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[4]/button', 'nan'],
-    '断言': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[4]/button', '登陆成功']
+    '断言': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[1]/div/div[2]/div[1]/span/span[2]', 'Aresn']
 }
+
 
 # 后续可以在这里添加测试逻辑
 
@@ -33,13 +36,13 @@ cases_name = get_now_file_name()
 
 # # 步骤变量定义(暂时不需要)
 # all_steps = convert_dict_to_variables(operation_steps)
-# print('===========================测试步骤变量如下========================================')
-# print(all_steps)  #示例
-# # step1 = ['打开_浏览器', 'no', 'nan', 'nan']
-# # step2 = ['打开_url_登录', 'https://adminplus.iviewui.com/', 'nan', 'nan']
-# print('===========================测试步骤变量如上========================================')
+
+# 转为by使用
+convert_dict(operation_steps)
 # 获取列表
 all_steps = get_all_steps(operation_steps)
+
+
 # =====================以下是测试用例模板====================
 
 ########################
@@ -62,15 +65,19 @@ class Test_Template(Keys):
             if '打开_浏览器' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.start_chrome()
+                    self.wait(1)
             if '打开_url' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.open(step[1])
+                    self.wait(1)
             if '输入' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.input(step[1], step[2], step[3])
+                    self.wait(1)
             if '点击' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.click(step[1], step[2])
+                    self.wait(1)
             if '断言' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     assert self.text(step[1], step[2]) == step[0]
