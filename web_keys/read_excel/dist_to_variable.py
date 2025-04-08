@@ -60,7 +60,10 @@ if __name__ == "__main__":
     # 打印生成的变量内容
     print("生成的变量内容：")
     print(variables_content)
+    print(type(variables_content))
 
-    # 现在可以直接使用变量
-    print("\n使用变量：")
-    print(step1)  # 输出: ['打开_浏览器', 'nan', 'nan', 'nan']
+    # # 现在可以直接使用变量
+    # print("\n使用变量：")
+    # print(step1)  # 输出: ['打开_浏览器', 'nan', 'nan', 'nan']
+for x in variables_content:
+    print(x)

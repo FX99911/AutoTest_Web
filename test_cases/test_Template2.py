@@ -15,10 +15,6 @@ test_data = {'打开_浏览器': ['yes', 'nan', 'nan'], '打开_url_登录': ['h
 
 #######所需变量######
 
-project_nam=first_two_rows
-test_module	测试一级目录模块
-case_name	测试用例名称
-
 try:
     project_name = data_dict['project_name']
     test_module_name = data_dict['test_module']
