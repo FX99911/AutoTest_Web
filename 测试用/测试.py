@@ -27,4 +27,5 @@ case_name = project_info['测试点'][0]
 
 # 步骤变量定义
 steps = convert_dict_to_variables(operation_steps)
+print(steps)
 print(step1)
