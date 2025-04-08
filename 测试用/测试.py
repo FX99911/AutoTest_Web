@@ -3,7 +3,7 @@ import allure
 from web_keys.seleniuum_device.keys import Keys
 from web_keys.read_excel.dist_to_variable import convert_dict_to_variables, get_all_steps
 from web_keys.template_method.get_now_file_name import get_now_file_name
-from web_keys.read_excel.modify_excel_dict import convert_by_string ,convert_dict
+from web_keys.read_excel.modify_excel_dict import  convert_list_to_by
 
 # 测试用例数据
 # 项目信息
@@ -37,8 +37,6 @@ cases_name = get_now_file_name()
 # # 步骤变量定义(暂时不需要)
 # all_steps = convert_dict_to_variables(operation_steps)
 
-# 转为by使用
-convert_dict(operation_steps)
 # 获取列表
 all_steps = get_all_steps(operation_steps)
 
@@ -60,6 +58,7 @@ class Test_Template(Keys):
     def test_execute(self):                    #这个就是定义一个(用例)，test_开头
         num = 0
         for step in all_steps:
+            step = convert_list_to_by(step)
             print(f'当前测试步骤信息{step}')
             num += 1
             if '打开_浏览器' in step[0] :
@@ -80,7 +79,7 @@ class Test_Template(Keys):
                     self.wait(1)
             if '断言' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
-                    assert self.text(step[1], step[2]) == step[0]
+                    assert self.text(step[1], step[2]) == step[3]
             if '关闭浏览器' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.quit()

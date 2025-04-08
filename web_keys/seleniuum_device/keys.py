@@ -129,27 +129,21 @@ class Keys:
     def open(self, url):
         """
         访问指定URL
-
-        Args:
-            url (str): 要访问的网页地址
         """
         try:
             self.driver.get(url)
         except Exception as e:
-            print(f"打开url失败: {e}")
+            print(f"错误：打开URL失败 - {str(e)}")
 
     def locator(self, by, value):
         """
-        查找元素，能满足不同场景下的不同元素定位方法
-
-        Args:
-            by: 定位方式，如By.ID, By.XPATH等
-            value: 定位值
-
-        Returns:
-            WebElement: 找到的元素
+        查找元素
         """
-        return self.driver.find_element(by, value)
+        try:
+            return self.driver.find_element(by, value)
+        except Exception as e:
+            print(f"错误：查找元素失败 - {str(e)}")
+            return None
 
     def find_elements(self, by, value):
         """
@@ -167,13 +161,11 @@ class Keys:
     def input(self, by, value, txt):
         """
         在指定元素中输入文本
-
-        Args:
-            by: 定位方式
-            value: 定位值
-            txt: 要输入的文本
         """
-        self.locator(by, value).send_keys(txt)
+        try:
+            self.locator(by, value).send_keys(txt)
+        except Exception as e:
+            print(f"错误：输入文本失败 - {str(e)}")
 
     def clear_and_input(self, by, value, txt):
         """
@@ -191,12 +183,11 @@ class Keys:
     def click(self, by, value):
         """
         点击指定元素
-
-        Args:
-            by: 定位方式
-            value: 定位值
         """
-        self.locator(by, value).click()
+        try:
+            self.locator(by, value).click()
+        except Exception as e:
+            print(f"错误：点击元素失败 - {str(e)}")
 
     def quit(self):
         """
@@ -258,68 +249,41 @@ class Keys:
     def wait_for_element(self, by, value, timeout=10):
         """
         显式等待元素出现
-
-        Args:
-            by: 定位方式
-            value: 定位值
-            timeout: 最大等待时间（秒）
-
-        Returns:
-            WebElement: 等待出现的元素
-
-        Raises:
-            TimeoutException: 如果元素在指定时间内未出现
         """
         try:
             element = WebDriverWait(self.driver, timeout).until(
                 EC.presence_of_element_located((by, value))
             )
             return element
-        except TimeoutException:
-            print(f"超时: 未能在{timeout}秒内找到元素 ({by}, {value})")
-            raise
+        except Exception as e:
+            print(f"错误：等待元素失败 - {str(e)}")
+            return None
 
     def wait_for_element_clickable(self, by, value, timeout=10):
         """
         等待元素可点击
-
-        Args:
-            by: 定位方式
-            value: 定位值
-            timeout: 最大等待时间（秒）
-
-        Returns:
-            WebElement: 等待可点击的元素
         """
         try:
             element = WebDriverWait(self.driver, timeout).until(
                 EC.element_to_be_clickable((by, value))
             )
             return element
-        except TimeoutException:
-            print(f"超时: 未能在{timeout}秒内找到可点击元素 ({by}, {value})")
-            raise
+        except Exception as e:
+            print(f"错误：等待元素可点击失败 - {str(e)}")
+            return None
 
     def wait_for_element_visible(self, by, value, timeout=10):
         """
         等待元素可见
-
-        Args:
-            by: 定位方式
-            value: 定位值
-            timeout: 最大等待时间（秒）
-
-        Returns:
-            WebElement: 等待可见的元素
         """
         try:
             element = WebDriverWait(self.driver, timeout).until(
                 EC.visibility_of_element_located((by, value))
             )
             return element
-        except TimeoutException:
-            print(f"超时: 未能在{timeout}秒内找到可见元素 ({by}, {value})")
-            raise
+        except Exception as e:
+            print(f"错误：等待元素可见失败 - {str(e)}")
+            return None
 
     def maximize_window(self):
         """

@@ -1,47 +1,72 @@
 from selenium.webdriver.common.by import By
 
 
-def convert_by_string(lst):
+def convert_to_by(by_str):
     """
-    此函数用于将列表中以 'By.' 开头的字符串转换为 By 类对应的属性
-    :param lst: 待处理的列表，列表元素可能包含以 'By.' 开头的字符串
-    :return: 处理后的新列表，其中以 'By.' 开头的字符串已转换为 By 类的属性
+    将字符串形式的定位方式转换为Selenium的By对象
+    :param by_str: 字符串形式的定位方式，如 'By.ID', 'By.XPATH' 等
+    :return: Selenium的By对象
     """
-    # 初始化一个空列表，用于存储转换后的元素
-    new_lst = []
-    # 遍历输入列表中的每个元素
-    for item in lst:
-        # 检查元素是否为字符串类型，并且是否以 'By.' 开头
-        if isinstance(item, str) and item.startswith('By.'):
-            try:
-                # 通过分割字符串，提取出定位方式的名称，例如 'id'
-                locator_name = item.split('.')[-1]
-                # 使用 getattr 函数从 By 类中获取对应的属性
-                # 例如，如果 locator_name 为 'id'，则获取 By.ID
-                new_lst.append(getattr(By, locator_name))
-            except AttributeError:
-                # 如果 By 类中不存在指定名称的属性，捕获 AttributeError 异常
-                # 并打印错误信息，提示用户 By 类中没有该属性
-                print(f"错误：By 类中不存在名为 {locator_name} 的属性。")
-                # 将原字符串添加到新列表中，保持元素不变
-                new_lst.append(item)
-        else:
-            # 如果元素不是以 'By.' 开头的字符串，直接添加到新列表中
-            new_lst.append(item)
-    # 返回处理后的新列表
-    return new_lst
+    try:
+        if isinstance(by_str, str) and by_str.startswith('By.'):
+            # 直接获取By类的属性
+            return getattr(By, by_str.split('.')[-1])
+        return by_str
+    except AttributeError:
+        print(f"错误：不支持的定位方式 - {by_str}")
+        return by_str
 
 
-def convert_dict(dictionary):
+def convert_list_to_by(by_list):
     """
-    此函数用于处理字典，将字典中值为列表的元素里以 'By.' 开头的字符串转换为 By 类对应的属性
-    :param dictionary: 待处理的字典
-    :return: 处理后的字典
+    将列表中的字符串形式的定位方式转换为Selenium的By对象
+    :param by_list: 包含定位方式的列表
+    :return: 转换后的列表
     """
-    new_dict = {}
-    for key, value in dictionary.items():
-        if isinstance(value, list):
-            new_dict[key] = convert_by_string(value)
-        else:
-            new_dict[key] = value
-    return new_dict
+    try:
+        return [convert_to_by(item) for item in by_list]
+    except Exception as e:
+        print(f"错误：转换列表失败 - {str(e)}")
+        return by_list
+
+
+def convert_dict_to_by(by_dict):
+    """
+    将字典中的字符串形式的定位方式转换为Selenium的By对象
+    :param by_dict: 包含定位方式的字典
+    :return: 转换后的字典
+    """
+    try:
+        new_dict = {}
+        for key, value in by_dict.items():
+            if isinstance(value, str):
+                new_dict[key] = convert_to_by(value)
+            elif isinstance(value, list):
+                new_dict[key] = convert_list_to_by(value)
+            elif isinstance(value, dict):
+                new_dict[key] = convert_dict_to_by(value)
+            else:
+                new_dict[key] = value
+        return new_dict
+    except Exception as e:
+        print(f"错误：转换字典失败 - {str(e)}")
+        return by_dict
+
+
+# 使用示例
+if __name__ == "__main__":
+    # 直接使用字符串
+    a = 'By.ID'
+    by_obj = convert_to_by(a)  # 得到 By.ID 对象
+
+    # 现在可以直接使用
+    print(by_obj)  # 输出: id
+    print(type(by_obj))  # 输出: <class 'selenium.webdriver.common.by.By'>
+
+    # 在Selenium中使用
+    # element = driver.find_element(by_obj, 'username')
+
+    b = ['输入_密码', 'By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[2]/div/div/div/input', 'admin']
+    bb = convert_list_to_by(b)
+    print(bb)  # 输出: id
+    print(type(bb))
