@@ -65,30 +65,42 @@ class Test_Template(Keys):
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.start_chrome()
                     self.wait(1)
-            if '打开_url' in step[0] :
+            elif '打开_url' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.open(step[1])
                     self.wait(1)
-            if '输入' in step[0] :
+            elif '输入' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.input(step[1], step[2], step[3])
                     self.wait(1)
-            if '点击' in step[0] :
+            elif '点击' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.click(step[1], step[2])
                     self.wait(1)
-            if '断言' in step[0] :
+            elif '断言' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     assert self.text(step[1], step[2]) == step[3]
-            if '关闭浏览器' in step[0] :
+            elif '关闭浏览器' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.quit()
-            if '刷新页面' in step[0] :
+            elif '刷新页面' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.refresh()
-
-
-
+            elif '清空输入框' in step[0] :
+                with allure.step(f'第{num}步：{step[0]}'):
+                    self.clear_box(step[1], step[2])
+            elif '强制等待' in step[0] :
+                with allure.step(f'第{num}步：{step[0]}'):
+                    self.wait(step[1])
+            elif '返回上一页' in step[0] :
+                with allure.step(f'第{num}步：{step[0]}'):
+                    self.driver.back()
+            elif '前进下一页' in step[0] :
+                with allure.step(f'第{num}步：{step[0]}'):
+                    self.driver.forward()
+            elif '截图' in step[0] :
+                with allure.step(f'第{num}步：{step[0]}'):
+                    self.refresh()
 
 
 

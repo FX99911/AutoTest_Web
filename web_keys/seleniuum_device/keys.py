@@ -167,18 +167,16 @@ class Keys:
         except Exception as e:
             print(f"错误：输入文本失败 - {str(e)}")
 
-    def clear_and_input(self, by, value, txt):
+    def clear_box(self, by, value):
         """
-        清空元素中的内容并输入新文本
+        清空元素中的内容
 
         Args:
             by: 定位方式
             value: 定位值
-            txt: 要输入的文本
         """
         element = self.locator(by, value)
         element.clear()
-        element.send_keys(txt)
 
     def click(self, by, value):
         """

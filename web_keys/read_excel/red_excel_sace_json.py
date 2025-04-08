@@ -117,113 +117,53 @@ def read_excel_from_fourth_row(file_path: str) -> List[Dict[str, Dict[str, List[
         return []
 
 
-def create_first_directory(data: Dict[str, List[str]], base_dir: str = BASE_DIR) -> str:
+def create_directories(data: Dict[str, List[str]], base_dir: str = BASE_DIR) -> str:
     """
-    创建第一级目录，目录名为字典的第一个value
-
-    Args:
-        data (Dict[str, List[str]]): read_single_excel函数返回的字典
-        base_dir (str): 基础目录路径，默认为项目根目录下的cases_date
-
-    Returns:
-        str: 创建的目录路径
-    """
-    try:
-        if not data:
-            raise ValueError("字典为空")
-
-        # 获取第一个value作为目录名
-        first_value = list(data.values())[0][0]
-        dir_path = os.path.join(base_dir, first_value)
-
-        # 创建目录
-        os.makedirs(dir_path, exist_ok=True)
-        return dir_path
-    except Exception as e:
-        print(f"创建第一级目录时发生错误: {str(e)}")
-        return ""
-
-
-def create_second_directory(data: Dict[str, List[str]], parent_dir: str) -> str:
-    """
-    在父目录下创建第二级目录，目录名为字典的第二个value
-
-    Args:
-        data (Dict[str, List[str]]): read_single_excel函数返回的字典
-        parent_dir (str): 父目录路径
-
-    Returns:
-        str: 创建的目录路径
-    """
-    try:
-        if not data or len(data) < 2:
-            raise ValueError("字典中至少需要两个value")
-
-        # 获取第二个value作为目录名
-        second_value = list(data.values())[1][0]
-        dir_path = os.path.join(parent_dir, second_value)
-
-        # 创建目录
-        os.makedirs(dir_path, exist_ok=True)
-        return dir_path
-    except Exception as e:
-        print(f"创建第二级目录时发生错误: {str(e)}")
-        return ""
-
-
-def create_third_directory(data: Dict[str, List[str]], parent_dir: str) -> str:
-    """
-    在父目录下创建第三级目录，目录名为字典的第三个value
-
-    Args:
-        data (Dict[str, List[str]]): read_single_excel函数返回的字典
-        parent_dir (str): 父目录路径
-
-    Returns:
-        str: 创建的目录路径
+    创建三级目录结构
     """
     try:
         if not data or len(data) < 3:
             raise ValueError("字典中至少需要三个value")
-
-        # 获取第三个value作为目录名
-        third_value = list(data.values())[2][0]
-        dir_path = os.path.join(parent_dir, third_value)
-
-        # 创建目录
-        os.makedirs(dir_path, exist_ok=True)
-        return dir_path
+        # 创建第一级目录
+        first_dir = os.path.join(base_dir, list(data.values())[0][0])
+        os.makedirs(first_dir, exist_ok=True)
+        # 创建第二级目录
+        second_dir = os.path.join(first_dir, list(data.values())[1][0])
+        os.makedirs(second_dir, exist_ok=True)
+        # 创建第三级目录
+        third_dir = os.path.join(second_dir, list(data.values())[2][0])
+        os.makedirs(third_dir, exist_ok=True)
+        return third_dir
     except Exception as e:
-        print(f"创建第三级目录时发生错误: {str(e)}")
+        print(f"创建目录时发生错误: {str(e)}")
         return ""
 
 
-def create_test_files(test_cases: List[Dict[str, Dict[str, List[str]]]], output_dir: str,
-                      first_two_rows: Dict[str, List[str]]) -> List[str]:
+def create_test_files_from_template(test_cases: List[Dict[str, Dict[str, List[str]]]],
+                                  output_dir: str,
+                                  first_two_rows: Dict[str, List[str]],
+                                  template_path: str) -> List[str]:
     """
-    根据测试用例字典创建对应的Python文件，如果文件已存在则只更新数据部分
-
-    Args:
-        test_cases (List[Dict[str, Dict[str, List[str]]]]): 测试用例字典列表
-        output_dir (str): 输出目录路径
-        first_two_rows (Dict[str, List[str]]): Excel前两行的数据
-
-    Returns:
-        List[str]: 创建或更新的文件路径列表
+    根据模板创建测试文件，并添加序号前缀以确保执行顺序
     """
     created_files = []
     try:
+        # 读取模板文件
+        with open(template_path, 'r', encoding='utf-8') as f:
+            template_content = f.read()
+
         # 确保输出目录存在
         os.makedirs(output_dir, exist_ok=True)
 
-        for test_case in test_cases:
-            # 获取测试用例名称（字典的key）
+        # 遍历测试用例，添加序号前缀
+        for index, test_case in enumerate(test_cases, start=1):
+            # 获取测试用例名称
             test_name = list(test_case.keys())[0]
-            # 创建文件名（替换特殊字符）
-            file_name = f"test_{test_name.replace('-', '_')}.py"
+            # 添加序号前缀，格式化为两位数（01, 02, ...）
+            file_name = f"test_{index:02d}_{test_name.replace('-', '_')}.py"
             file_path = os.path.join(output_dir, file_name)
 
-            # 获取测试用例数据（字典的value）
+            # 获取测试用例数据
             test_data = test_case[test_name]
 
             # 格式化项目信息
@@ -238,39 +178,9 @@ def create_test_files(test_cases: List[Dict[str, Dict[str, List[str]]]], output_
                 formatted_operation_steps += f"    '{key}': {value},\n"
             formatted_operation_steps = formatted_operation_steps.rstrip(',\n') + "\n}"
 
-            # 检查文件是否存在
-            if os.path.exists(file_path):
-                # 读取现有文件内容
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-
-                # 使用正则表达式替换数据部分
-                import re
-                # 替换项目信息
-                content = re.sub(
-                    r'project_info = {.*?}',
-                    f'project_info = {formatted_project_info}',
-                    content,
-                    flags=re.DOTALL
-                )
-                # 替换操作步骤
-                content = re.sub(
-                    r'operation_steps = {.*?}',
-                    f'operation_steps = {formatted_operation_steps}',
-                    content,
-                    flags=re.DOTALL
-                )
-            else:
-                # 创建新文件内容
-                content = f"""# 测试用例数据
-# 项目信息
-project_info = {formatted_project_info}
-
-# 操作步骤
-operation_steps = {formatted_operation_steps}
-
-# 后续可以在这里添加测试逻辑
-"""
+            # 替换模板中的占位符
+            content = template_content.replace('{project_info}', formatted_project_info)
+            content = content.replace('{operation_steps}', formatted_operation_steps)
 
             # 写入文件
             with open(file_path, 'w', encoding='utf-8') as f:
@@ -287,8 +197,9 @@ operation_steps = {formatted_operation_steps}
 
 # 使用示例
 if __name__ == "__main__":
-    # 文件目录
+    # 文件路径
     excel_url = f"{home}/cases_date/test_excel.xlsx"
+    template_path = f"{home}/cases_date/test_case_template.py"
 
     # 读取Excel文件（前两行）
     data = read_single_excel(excel_url)
@@ -300,22 +211,14 @@ if __name__ == "__main__":
     print("\nExcel从第四行开始的数据:")
     for test_case in data_from_fourth:
         print(test_case)
-        print()  # 添加空行分隔不同的测试用例
+        print()
 
-    # 创建第一级目录（使用默认的BASE_DIR）
-    first_dir = create_first_directory(data)
-    print(f"\n第一级目录路径: {first_dir}")
+    # 创建目录结构
+    third_dir = create_directories(data)
+    print(f"\n第三级目录路径: {third_dir}")
 
-    # 创建第二级目录
-    second_dir = create_second_directory(data, first_dir)
-    print(f"第二级目录路径: {second_dir}")
-
-    # 创建第三级目录
-    third_dir = create_third_directory(data, second_dir)
-    print(f"第三级目录路径: {third_dir}")
-
-    # 在第三级目录中创建测试文件
-    created_files = create_test_files(data_from_fourth, third_dir, data)
+    # 使用模板创建测试文件
+    created_files = create_test_files_from_template(data_from_fourth, third_dir, data, template_path)
     print("\n创建的文件列表:")
     for file_path in created_files:
         print(file_path)
