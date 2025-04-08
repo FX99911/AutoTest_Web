@@ -42,6 +42,27 @@ def convert_dict_to_variables(data_dict: dict) -> str:
         return ""
 
 
+def get_all_steps(data_dict: dict) -> list:
+    """
+    获取所有步骤的列表
+
+    Args:
+        data_dict (dict): 包含操作步骤的字典
+
+    Returns:
+        list: 包含所有步骤的列表，每个步骤是一个列表
+    """
+    try:
+        steps = []
+        for step_name, step_data in data_dict.items():
+            step_list = [step_name] + step_data
+            steps.append(step_list)
+        return steps
+    except Exception as e:
+        print(f"获取步骤列表时发生错误: {str(e)}")
+        return []
+
+
 # 使用示例
 if __name__ == "__main__":
     # 示例数据
@@ -60,10 +81,13 @@ if __name__ == "__main__":
     # 打印生成的变量内容
     print("生成的变量内容：")
     print(variables_content)
-    print(type(variables_content))
 
-    # # 现在可以直接使用变量
-    # print("\n使用变量：")
-    # print(step1)  # 输出: ['打开_浏览器', 'nan', 'nan', 'nan']
-for x in variables_content:
-    print(x)
+    # 现在可以直接使用变量
+    print("\n使用变量：")
+    print(step1)  # 输出: ['打开_浏览器', 'nan', 'nan', 'nan']
+
+    # 使用新功能循环输出所有步骤
+    print("\n循环输出所有步骤：")
+    all_steps = get_all_steps(test_data)
+    for step in all_steps:
+        print(step)
