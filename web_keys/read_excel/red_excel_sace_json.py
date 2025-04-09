@@ -11,6 +11,9 @@ from web_keys.environment_info.montage_url import home
 # 设置默认基础路径(存放测试用例的路径)
 BASE_DIR = f'{home}/cases_date'
 print("--测试用例保存路径 = ", BASE_DIR)
+# 设置默认基础路径(存放截图的路径)
+PICTURE_DIR = f'{home}/reports/screenshot'
+print("--测试截图保存路径 = ", PICTURE_DIR)
 
 
 def read_single_excel(file_path: str) -> Dict[str, List[str]]:
@@ -119,7 +122,7 @@ def read_excel_from_fourth_row(file_path: str) -> List[Dict[str, Dict[str, List[
 
 def create_directories(data: Dict[str, List[str]], base_dir: str = BASE_DIR) -> str:
     """
-    创建三级目录结构
+    创建三级目录结构（测试用例的）
     """
     try:
         if not data or len(data) < 3:
@@ -135,8 +138,30 @@ def create_directories(data: Dict[str, List[str]], base_dir: str = BASE_DIR) -> 
         os.makedirs(third_dir, exist_ok=True)
         return third_dir
     except Exception as e:
-        print(f"创建目录时发生错误: {str(e)}")
+        print(f"创建用例目录时发生错误: {str(e)}")
         return ""
+
+def create_picture_directories(data: Dict[str, List[str]], picture_dir: str = PICTURE_DIR) -> str:
+    """
+    创建三级目录结构（测试截图的）
+    """
+    try:
+        if not data or len(data) < 3:
+            raise ValueError("字典中至少需要三个value")
+        # 创建第一级目录
+        first_dir = os.path.join(picture_dir, list(data.values())[0][0])
+        os.makedirs(first_dir, exist_ok=True)
+        # 创建第二级目录
+        second_dir = os.path.join(first_dir, list(data.values())[1][0])
+        os.makedirs(second_dir, exist_ok=True)
+        # 创建第三级目录
+        third_dir = os.path.join(second_dir, list(data.values())[2][0])
+        os.makedirs(third_dir, exist_ok=True)
+        return third_dir
+    except Exception as e:
+        print(f"创建截图目录时发生错误: {str(e)}")
+        return ""
+
 
 
 def create_test_files_from_template(test_cases: List[Dict[str, Dict[str, List[str]]]],
@@ -178,9 +203,9 @@ def create_test_files_from_template(test_cases: List[Dict[str, Dict[str, List[st
                 formatted_operation_steps += f"    '{key}': {value},\n"
             formatted_operation_steps = formatted_operation_steps.rstrip(',\n') + "\n}"
 
-            # 替换模板中的占位符
-            content = template_content.replace('{project_info}', formatted_project_info)
-            content = content.replace('{operation_steps}', formatted_operation_steps)
+            # 替换空字典为实际数据
+            content = template_content.replace("project_info = {}", f"project_info = {formatted_project_info}")
+            content = content.replace("operation_steps = {}", f"operation_steps = {formatted_operation_steps}")
 
             # 写入文件
             with open(file_path, 'w', encoding='utf-8') as f:
@@ -213,9 +238,13 @@ if __name__ == "__main__":
         print(test_case)
         print()
 
-    # 创建目录结构
+    # 创建测试用例目录结构
     third_dir = create_directories(data)
-    print(f"\n第三级目录路径: {third_dir}")
+    print(f"\n测试用例-第三级目录路径: {third_dir}")
+
+    # 创建截图目录结构
+    picture_dir = create_picture_directories(data)
+    print(f"\n测试截图-第三级目录路径: {picture_dir}")
 
     # 使用模板创建测试文件
     created_files = create_test_files_from_template(data_from_fourth, third_dir, data, template_path)

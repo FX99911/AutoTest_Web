@@ -72,6 +72,8 @@ except json.JSONDecodeError:
 except Exception as e:
     print(f"error:读取配置文件时出现其他错误: {e}")
 
+# 全局浏览器实例
+_global_driver = None
 
 # -----------------------
 class Keys:
@@ -79,9 +81,6 @@ class Keys:
     Selenium操作封装类，提供常用的浏览器操作方法
     """
 
-    # def __init__(self):
-    #     # 在初始化时启动浏览器，并保存 driver 到实例属性
-    #     self.driver = self.start_chrome()
 
     def start_chrome(self):
         """
@@ -91,40 +90,42 @@ class Keys:
         Returns:
             WebDriver: 配置好的Chrome WebDriver实例
         """
+        global _global_driver
+        if _global_driver is not None:
+            return _global_driver
+
+        # 根据操作系统类型选择驱动路径
         if pc_type == 'win':
-            try:
-                # 创建设置浏览器对象
-                self.opt1 = Options()
-                # 禁用沙盒模式(增加兼容性)
-                self.opt1.add_argument('--no-sandbox')
-                # 保持浏览器打开状态
-                self.opt1.add_experimental_option('detach', True)
-                # 设置浏览器缩放比例70%
-                self.opt1.add_argument('--force-device-scale-factor=0.7')
-                # 配置启动文件路径，并且使用opt1的设置，启动浏览器
-                self.driver = webdriver.Chrome(service=Service(Win_chromedriver_url), options=self.opt1)
-                # 隐性等待时间配置10s
-                self.driver.implicitly_wait(10)
-                return self.driver
-            except Exception as e:
-                print(f"【error:】打开浏览器失败: {e}")
-
-        elif pc_type == 'mac':
-            try:
-                # 创建设置浏览器对象
-                self.opt1 = Options()
-                # 保持浏览器打开状态
-                self.opt1.add_experimental_option('detach', True)
-                # 配置启动文件路径，并且使用opt1的设置，启动浏览器
-                self.driver = webdriver.Chrome(service=Service(Mac_chromedriver_url), options=self.opt1)
-                # 隐性等待时间配置10s
-                self.driver.implicitly_wait(10)
-                return self.driver
-            except Exception as e:
-                print(f"【出现错误】打开浏览器失败: {e}")
-
+            chromedriver_url = Win_chromedriver_url
         else:
-            print('pc只能输入：win/mac ，isH5只能输入：yes/no且必须为字符串')
+            chromedriver_url = Mac_chromedriver_url
+
+        # 创建Chrome选项对象
+        chrome_options = Options()
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--disable-extensions')
+        chrome_options.add_argument('--disable-software-rasterizer')
+        chrome_options.add_argument('--ignore-certificate-errors')
+        chrome_options.add_argument('--allow-running-insecure-content')
+        chrome_options.add_argument('--window-size=1920,1080')
+        chrome_options.add_argument('--start-maximized')
+        chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+        chrome_options.add_experimental_option('excludeSwitches', ['enable-automation'])
+        chrome_options.add_experimental_option('useAutomationExtension', False)
+
+        # 创建Service对象
+        service = Service(executable_path=chromedriver_url)
+
+        try:
+            # 创建WebDriver实例
+            _global_driver = webdriver.Chrome(service=service, options=chrome_options)
+            self.driver = _global_driver
+            return _global_driver
+        except Exception as e:
+            print(f"启动Chrome浏览器失败: {e}")
+            return None
 
     def open(self, url):
         """
@@ -189,9 +190,23 @@ class Keys:
 
     def quit(self):
         """
-        关闭浏览器及所有相关窗口
+        关闭浏览器并清理资源
         """
-        self.driver.quit()
+        global _global_driver
+        if _global_driver is not None:
+            try:
+                _global_driver.quit()
+            except Exception as e:
+                print(f"关闭浏览器时出错: {e}")
+            finally:
+                _global_driver = None
+                self.driver = None
+
+    def quit_browser(self):
+        """
+        关闭浏览器并清理资源（别名方法）
+        """
+        self.quit()
 
     def close(self):
         """
@@ -611,3 +626,23 @@ class Keys:
             str: 当前页面URL
         """
         return self.driver.current_url
+
+    def get_browser(self):
+        """
+        获取浏览器实例
+        """
+        if not self.is_browser_running():
+            try:
+                self.driver = self.start_chrome()
+                self.is_browser_open = True
+                return self.driver
+            except Exception as e:
+                print(f"错误：启动浏览器失败 - {str(e)}")
+                return None
+        return self.driver
+
+    def is_browser_running(self):
+        """
+        检查浏览器是否正在运行
+        """
+        return self.is_browser_open and self.driver is not None

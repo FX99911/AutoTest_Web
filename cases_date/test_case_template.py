@@ -6,24 +6,10 @@ from web_keys.template_method.get_now_file_name import get_now_file_name
 from web_keys.read_excel.modify_excel_dict import  convert_list_to_by
 
 # 测试用例数据
-# 项目信息
-project_info = {
-    '项目名称': ['测试的项目'],
-    '模块名称': ['首页'],
-    '测试点': ['登陆'],
-    'nan': ['nan']
-}
+project_info = {}
 
 # 操作步骤
-operation_steps = {
-    '打开_浏览器': ['yes', 'nan', 'nan'],
-    '打开_url_登录': ['https://adminplus.iviewui.com/', 'nan', 'nan'],
-    '输入_用户名': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[1]/div/div/div/input', 'admin'],
-    '输入_密码': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[2]/div/div/div/input', 'admin'],
-    '点击_登录按钮': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[4]/button', 'nan'],
-    '断言': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[1]/div/div[2]/div[1]/span/span[2]', 'Aresn']
-}
-
+operation_steps = {}
 
 # 后续可以在这里添加测试逻辑
 
@@ -55,17 +41,15 @@ class Test_Template(Keys):
     @allure.title(f'测试用例名：{cases_name}')
     @allure.link(url='http://www.baidu.com', name='这是一个链接')
 
-    def test_execute(self):                    #这个就是定义一个(用例)，test_开头
+    def test_execute(self):  #这个就是定义一个(用例)，test_开头
+        self.start_chrome()
         num = 0
         for step in all_steps:
             step = convert_list_to_by(step)
             print(f'当前测试步骤信息{step}')
             num += 1
-            if '打开_浏览器' in step[0] :
-                with allure.step(f'第{num}步：{step[0]}'):
-                    self.start_chrome()
-                    self.wait(1)
-            elif '打开_url' in step[0] :
+
+            if '打开_url' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.open(step[1])
                     self.wait(1)
@@ -82,7 +66,7 @@ class Test_Template(Keys):
                     assert self.text(step[1], step[2]) == step[3]
             elif '关闭浏览器' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
-                    self.quit()
+                    self.quit_browser()
             elif '刷新页面' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.refresh()
