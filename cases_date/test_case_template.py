@@ -4,7 +4,7 @@ from web_keys.seleniuum_device.keys import Keys
 from web_keys.read_excel.dist_to_variable import convert_dict_to_variables, get_all_steps
 from web_keys.template_method.get_now_file_name import get_now_file_name
 from web_keys.read_excel.modify_excel_dict import  convert_list_to_by
-
+from web_keys.seleniuum_device.browser_manager import browser_manager
 # 测试用例数据
 project_info = {}
 
@@ -43,6 +43,8 @@ class Test_Template(Keys):
 
     def test_execute(self):  #这个就是定义一个(用例)，test_开头
         self.start_chrome()
+        time.sleep(1)
+        print('等待5秒启动浏览器')
         num = 0
         for step in all_steps:
             step = convert_list_to_by(step)
@@ -66,7 +68,7 @@ class Test_Template(Keys):
                     assert self.text(step[1], step[2]) == step[3]
             elif '关闭浏览器' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
-                    self.quit_browser()
+                    self.quit()
             elif '刷新页面' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.refresh()
