@@ -8,11 +8,16 @@ from web_keys.environment_info.montage_url import home
 #####################################################################
 
 
-# 设置默认基础路径(存放测试用例的路径)
-BASE_DIR = f'{home}/cases_date'
+# 设置默认基础路径(存放测试用例的路径)<<<<<<<<<<<
+BASE_DIR = f'{home}/cases_date' #<<<<<<<配置
 print("--测试用例保存路径 = ", BASE_DIR)
+
+# 设置默认基础路径(存放测试用例的路径)<<<<<<<<<<<
+BASE_RUN_DIR = f'{home}/cases_run' #<<<<<<<配置
+print("--测试用例保存路径 = ", BASE_RUN_DIR)
+
 # 设置默认基础路径(存放截图的路径)
-PICTURE_DIR = f'{home}/reports/screenshot'
+PICTURE_DIR = f'{home}/reports/screenshot'#<<<<<<<配置
 print("--测试截图保存路径 = ", PICTURE_DIR)
 
 
@@ -120,7 +125,7 @@ def read_excel_from_fourth_row(file_path: str) -> List[Dict[str, Dict[str, List[
         return []
 
 
-def create_directories(data: Dict[str, List[str]], base_dir: str = BASE_DIR) -> str:
+def create_directories(data: Dict[str, List[str]], base_dir: str = BASE_RUN_DIR) -> str:
     """
     创建三级目录结构（测试用例的）
     """
@@ -220,35 +225,35 @@ def create_test_files_from_template(test_cases: List[Dict[str, Dict[str, List[st
         return []
 
 
-# 使用示例
-if __name__ == "__main__":
-    # 文件路径
-    excel_url = f"{home}/cases_date/test_excel.xlsx"
-    template_path = f"{home}/cases_date/test_case_template.py"
-
-    # 读取Excel文件（前两行）
-    data = read_single_excel(excel_url)
-    print("Excel前两行数据:")
-    print(data)
-
-    # 读取Excel文件（从第四行开始）
-    data_from_fourth = read_excel_from_fourth_row(excel_url)
-    print("\nExcel从第四行开始的数据:")
-    for test_case in data_from_fourth:
-        print(test_case)
-        print()
-
-    # 创建测试用例目录结构
-    third_dir = create_directories(data)
-    print(f"\n测试用例-第三级目录路径: {third_dir}")
-
-    # 创建截图目录结构
-    picture_dir = create_picture_directories(data)
-    print(f"\n测试截图-第三级目录路径: {picture_dir}")
-
-    # 使用模板创建测试文件
-    created_files = create_test_files_from_template(data_from_fourth, third_dir, data, template_path)
-    print("\n创建的文件列表:")
-    for file_path in created_files:
-        print(file_path)
-
+# # 使用示例
+# if __name__ == "__main__":
+#     # 文件路径
+#     excel_url = f"{home}/cases_date/test_excel.xlsx"
+#     template_path = f"{home}/cases_date/test_case_template.py"
+#
+#     # 读取Excel文件（前两行）
+#     data = read_single_excel(excel_url)
+#     print("Excel前两行数据:")
+#     print(data)
+#
+#     # 读取Excel文件（从第四行开始）
+#     data_from_fourth = read_excel_from_fourth_row(excel_url)
+#     print("\nExcel从第四行开始的数据:")
+#     for test_case in data_from_fourth:
+#         print(test_case)
+#         print()
+#
+#     # 创建测试用例目录结构
+#     third_dir = create_directories(data)
+#     print(f"\n测试用例-第三级目录路径: {third_dir}")
+#
+#     # 创建截图目录结构
+#     picture_dir = create_picture_directories(data)
+#     print(f"\n测试截图-第三级目录路径: {picture_dir}")
+#
+#     # 使用模板创建测试文件
+#     created_files = create_test_files_from_template(data_from_fourth, third_dir, data, template_path)
+#     print("\n创建的文件列表:")
+#     for file_path in created_files:
+#         print(file_path)
+#
