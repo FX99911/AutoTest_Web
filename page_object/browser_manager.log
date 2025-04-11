@@ -1,0 +1,234 @@
+2025-04-09 13:51:06,923 - BrowserManager - INFO - 操作系统类型: mac
+2025-04-09 13:51:06,923 - BrowserManager - INFO - 是否H5项目: no
+2025-04-09 13:51:06,923 - BrowserManager - INFO - 备注信息: 
+2025-04-09 13:51:06,923 - BrowserManager - INFO - start_chrome 方法开始
+2025-04-09 13:51:06,923 - BrowserManager - INFO - 当前全局浏览器实例: None
+2025-04-09 13:51:06,923 - BrowserManager - INFO - 使用驱动路径: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:51:06,923 - BrowserManager - INFO - 创建新的Chrome浏览器实例
+2025-04-09 13:51:06,923 - selenium.webdriver.common.driver_finder - DEBUG - Skipping Selenium Manager; path to chrome driver specified in Service class: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:51:06,924 - selenium.webdriver.common.service - DEBUG - Started executable: `/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver` in a child process with pid: 99774 using 0 to output -3
+2025-04-09 13:51:06,940 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54543/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'goog:chromeOptions': {'excludeSwitches': ['enable-automation'], 'useAutomationExtension': False, 'extensions': [], 'args': ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-extensions', '--disable-software-rasterizer', '--ignore-certificate-errors', '--allow-running-insecure-content', '--window-size=1920,1080', '--start-maximized', '--disable-blink-features=AutomationControlled']}}}}
+2025-04-09 13:51:06,940 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:54543
+2025-04-09 13:51:07,986 - urllib3.connectionpool - DEBUG - http://localhost:54543 "POST /session HTTP/1.1" 200 890
+2025-04-09 13:51:07,986 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"135.0.7049.42","chrome":{"chromedriverVersion":"134.0.6998.88 (7e3d5c978c6d3a6eda25692cfac7f893a2b20dd0-refs/branch-heads/6998@{#1898})","userDataDir":"/var/folders/qm/tp9n9d216vsg7w4k9zxnvlkw0000gn/T/.org.chromium.Chromium.8NxqT8"},"fedcm:accounts":true,"goog:chromeOptions":{"debuggerAddress":"localhost:54552"},"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"mac","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:extension:minPinLength":true,"webauthn:extension:prf":true,"webauthn:virtualAuthenticators":true},"sessionId":"16fa3e60d9bce91e839bffd1f84ba927"}} | headers=HTTPHeaderDict({'Content-Length': '890', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:07,986 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:07,987 - BrowserManager - INFO - 成功创建新的浏览器实例: <selenium.webdriver.chrome.webdriver.WebDriver (session="16fa3e60d9bce91e839bffd1f84ba927")>
+2025-04-09 13:51:07,987 - BrowserManager - INFO - 打开URL: https://www.baidu.com/
+2025-04-09 13:51:07,987 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54543/session/16fa3e60d9bce91e839bffd1f84ba927/url {'url': 'https://www.baidu.com/'}
+2025-04-09 13:51:08,679 - urllib3.connectionpool - DEBUG - http://localhost:54543 "POST /session/16fa3e60d9bce91e839bffd1f84ba927/url HTTP/1.1" 200 14
+2025-04-09 13:51:08,682 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:08,682 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:08,682 - BrowserManager - INFO - 成功打开URL: https://www.baidu.com/
+2025-04-09 13:51:08,682 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:51:09,691 - BrowserManager - INFO - 输入文本: id=kw, 文本=马克思主义核心思想
+2025-04-09 13:51:09,692 - BrowserManager - INFO - 查找元素: id=kw
+2025-04-09 13:51:09,692 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54543/session/16fa3e60d9bce91e839bffd1f84ba927/element {'using': 'css selector', 'value': '[id="kw"]'}
+2025-04-09 13:51:09,703 - urllib3.connectionpool - DEBUG - http://localhost:54543 "POST /session/16fa3e60d9bce91e839bffd1f84ba927/element HTTP/1.1" 200 125
+2025-04-09 13:51:09,703 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.67EC396F440205C058A665686D467F9F.d.E9A20FBF45222481D587F7F3B84D0DE0.e.7"}} | headers=HTTPHeaderDict({'Content-Length': '125', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:09,703 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:09,704 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54543/session/16fa3e60d9bce91e839bffd1f84ba927/element/f.67EC396F440205C058A665686D467F9F.d.E9A20FBF45222481D587F7F3B84D0DE0.e.7/value {'text': '马克思主义核心思想', 'value': ['马', '克', '思', '主', '义', '核', '心', '思', '想']}
+2025-04-09 13:51:09,806 - urllib3.connectionpool - DEBUG - http://localhost:54543 "POST /session/16fa3e60d9bce91e839bffd1f84ba927/element/f.67EC396F440205C058A665686D467F9F.d.E9A20FBF45222481D587F7F3B84D0DE0.e.7/value HTTP/1.1" 200 14
+2025-04-09 13:51:09,806 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:09,806 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:09,806 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:51:10,810 - BrowserManager - INFO - 点击元素: id=su
+2025-04-09 13:51:10,810 - BrowserManager - INFO - 查找元素: id=su
+2025-04-09 13:51:10,810 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54543/session/16fa3e60d9bce91e839bffd1f84ba927/element {'using': 'css selector', 'value': '[id="su"]'}
+2025-04-09 13:51:10,815 - urllib3.connectionpool - DEBUG - http://localhost:54543 "POST /session/16fa3e60d9bce91e839bffd1f84ba927/element HTTP/1.1" 200 126
+2025-04-09 13:51:10,815 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.67EC396F440205C058A665686D467F9F.d.E9A20FBF45222481D587F7F3B84D0DE0.e.49"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:10,815 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:10,815 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54543/session/16fa3e60d9bce91e839bffd1f84ba927/element/f.67EC396F440205C058A665686D467F9F.d.E9A20FBF45222481D587F7F3B84D0DE0.e.49/click {}
+2025-04-09 13:51:10,849 - urllib3.connectionpool - DEBUG - http://localhost:54543 "POST /session/16fa3e60d9bce91e839bffd1f84ba927/element/f.67EC396F440205C058A665686D467F9F.d.E9A20FBF45222481D587F7F3B84D0DE0.e.49/click HTTP/1.1" 200 14
+2025-04-09 13:51:10,849 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:10,850 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:10,850 - BrowserManager - INFO - 等待 2 秒
+2025-04-09 13:51:12,855 - BrowserManager - INFO - 关闭浏览器
+2025-04-09 13:51:12,855 - selenium.webdriver.remote.remote_connection - DEBUG - DELETE http://localhost:54543/session/16fa3e60d9bce91e839bffd1f84ba927 {}
+2025-04-09 13:51:12,916 - urllib3.connectionpool - DEBUG - http://localhost:54543 "DELETE /session/16fa3e60d9bce91e839bffd1f84ba927 HTTP/1.1" 200 14
+2025-04-09 13:51:12,921 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:12,921 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:12,958 - BrowserManager - INFO - 浏览器已关闭
+2025-04-09 13:51:12,958 - BrowserManager - INFO - 浏览器实例已重置
+2025-04-09 13:51:23,123 - BrowserManager - INFO - 操作系统类型: mac
+2025-04-09 13:51:23,123 - BrowserManager - INFO - 是否H5项目: no
+2025-04-09 13:51:23,123 - BrowserManager - INFO - 备注信息: 
+2025-04-09 13:51:23,123 - BrowserManager - INFO - start_chrome 方法开始
+2025-04-09 13:51:23,123 - BrowserManager - INFO - 当前全局浏览器实例: None
+2025-04-09 13:51:23,123 - BrowserManager - INFO - 使用驱动路径: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:51:23,123 - BrowserManager - INFO - 创建新的Chrome浏览器实例
+2025-04-09 13:51:23,123 - selenium.webdriver.common.driver_finder - DEBUG - Skipping Selenium Manager; path to chrome driver specified in Service class: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:51:23,124 - selenium.webdriver.common.service - DEBUG - Started executable: `/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver` in a child process with pid: 99820 using 0 to output -3
+2025-04-09 13:51:23,142 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54758/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'goog:chromeOptions': {'excludeSwitches': ['enable-automation'], 'useAutomationExtension': False, 'extensions': [], 'args': ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-extensions', '--disable-software-rasterizer', '--ignore-certificate-errors', '--allow-running-insecure-content', '--window-size=1920,1080', '--start-maximized', '--disable-blink-features=AutomationControlled']}}}}
+2025-04-09 13:51:23,142 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:54758
+2025-04-09 13:51:24,041 - urllib3.connectionpool - DEBUG - http://localhost:54758 "POST /session HTTP/1.1" 200 890
+2025-04-09 13:51:24,041 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"135.0.7049.42","chrome":{"chromedriverVersion":"134.0.6998.88 (7e3d5c978c6d3a6eda25692cfac7f893a2b20dd0-refs/branch-heads/6998@{#1898})","userDataDir":"/var/folders/qm/tp9n9d216vsg7w4k9zxnvlkw0000gn/T/.org.chromium.Chromium.6vMVhu"},"fedcm:accounts":true,"goog:chromeOptions":{"debuggerAddress":"localhost:54763"},"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"mac","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:extension:minPinLength":true,"webauthn:extension:prf":true,"webauthn:virtualAuthenticators":true},"sessionId":"23232188fb5e8c2e24ab777d41a5f715"}} | headers=HTTPHeaderDict({'Content-Length': '890', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:24,041 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:24,041 - BrowserManager - INFO - 成功创建新的浏览器实例: <selenium.webdriver.chrome.webdriver.WebDriver (session="23232188fb5e8c2e24ab777d41a5f715")>
+2025-04-09 13:51:24,041 - BrowserManager - INFO - 打开URL: https://www.baidu.com/
+2025-04-09 13:51:24,041 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54758/session/23232188fb5e8c2e24ab777d41a5f715/url {'url': 'https://www.baidu.com/'}
+2025-04-09 13:51:24,689 - urllib3.connectionpool - DEBUG - http://localhost:54758 "POST /session/23232188fb5e8c2e24ab777d41a5f715/url HTTP/1.1" 200 14
+2025-04-09 13:51:24,692 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:24,693 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:24,693 - BrowserManager - INFO - 成功打开URL: https://www.baidu.com/
+2025-04-09 13:51:24,693 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:51:25,698 - BrowserManager - INFO - 输入文本: id=kw, 文本=马克思主义核心思想
+2025-04-09 13:51:25,698 - BrowserManager - INFO - 查找元素: id=kw
+2025-04-09 13:51:25,699 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54758/session/23232188fb5e8c2e24ab777d41a5f715/element {'using': 'css selector', 'value': '[id="kw"]'}
+2025-04-09 13:51:25,712 - urllib3.connectionpool - DEBUG - http://localhost:54758 "POST /session/23232188fb5e8c2e24ab777d41a5f715/element HTTP/1.1" 200 125
+2025-04-09 13:51:25,712 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.881F70B3DCC7490B9FA87AB614BC2880.d.3DB74AC287B67EA4B30B9E83482CCD2B.e.7"}} | headers=HTTPHeaderDict({'Content-Length': '125', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:25,712 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:25,712 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54758/session/23232188fb5e8c2e24ab777d41a5f715/element/f.881F70B3DCC7490B9FA87AB614BC2880.d.3DB74AC287B67EA4B30B9E83482CCD2B.e.7/value {'text': '马克思主义核心思想', 'value': ['马', '克', '思', '主', '义', '核', '心', '思', '想']}
+2025-04-09 13:51:25,817 - urllib3.connectionpool - DEBUG - http://localhost:54758 "POST /session/23232188fb5e8c2e24ab777d41a5f715/element/f.881F70B3DCC7490B9FA87AB614BC2880.d.3DB74AC287B67EA4B30B9E83482CCD2B.e.7/value HTTP/1.1" 200 14
+2025-04-09 13:51:25,818 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:25,818 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:25,818 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:51:26,822 - BrowserManager - INFO - 点击元素: id=su
+2025-04-09 13:51:26,822 - BrowserManager - INFO - 查找元素: id=su
+2025-04-09 13:51:26,822 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54758/session/23232188fb5e8c2e24ab777d41a5f715/element {'using': 'css selector', 'value': '[id="su"]'}
+2025-04-09 13:51:26,830 - urllib3.connectionpool - DEBUG - http://localhost:54758 "POST /session/23232188fb5e8c2e24ab777d41a5f715/element HTTP/1.1" 200 126
+2025-04-09 13:51:26,830 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.881F70B3DCC7490B9FA87AB614BC2880.d.3DB74AC287B67EA4B30B9E83482CCD2B.e.35"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:26,830 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:26,830 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54758/session/23232188fb5e8c2e24ab777d41a5f715/element/f.881F70B3DCC7490B9FA87AB614BC2880.d.3DB74AC287B67EA4B30B9E83482CCD2B.e.35/click {}
+2025-04-09 13:51:26,868 - urllib3.connectionpool - DEBUG - http://localhost:54758 "POST /session/23232188fb5e8c2e24ab777d41a5f715/element/f.881F70B3DCC7490B9FA87AB614BC2880.d.3DB74AC287B67EA4B30B9E83482CCD2B.e.35/click HTTP/1.1" 200 14
+2025-04-09 13:51:26,868 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:26,868 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:26,868 - BrowserManager - INFO - 等待 2 秒
+2025-04-09 13:51:28,873 - BrowserManager - INFO - 关闭浏览器
+2025-04-09 13:51:28,874 - selenium.webdriver.remote.remote_connection - DEBUG - DELETE http://localhost:54758/session/23232188fb5e8c2e24ab777d41a5f715 {}
+2025-04-09 13:51:28,930 - urllib3.connectionpool - DEBUG - http://localhost:54758 "DELETE /session/23232188fb5e8c2e24ab777d41a5f715 HTTP/1.1" 200 14
+2025-04-09 13:51:28,936 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:28,936 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:28,977 - BrowserManager - INFO - 浏览器已关闭
+2025-04-09 13:51:28,977 - BrowserManager - INFO - 浏览器实例已重置
+2025-04-09 13:51:35,818 - BrowserManager - INFO - 操作系统类型: mac
+2025-04-09 13:51:35,818 - BrowserManager - INFO - 是否H5项目: no
+2025-04-09 13:51:35,818 - BrowserManager - INFO - 备注信息: 
+2025-04-09 13:51:35,818 - BrowserManager - INFO - start_chrome 方法开始
+2025-04-09 13:51:35,818 - BrowserManager - INFO - 当前全局浏览器实例: None
+2025-04-09 13:51:35,818 - BrowserManager - INFO - 使用驱动路径: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:51:35,818 - BrowserManager - INFO - 创建新的Chrome浏览器实例
+2025-04-09 13:51:35,818 - selenium.webdriver.common.driver_finder - DEBUG - Skipping Selenium Manager; path to chrome driver specified in Service class: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:51:35,819 - selenium.webdriver.common.service - DEBUG - Started executable: `/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver` in a child process with pid: 99851 using 0 to output -3
+2025-04-09 13:51:35,836 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54954/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'goog:chromeOptions': {'excludeSwitches': ['enable-automation'], 'useAutomationExtension': False, 'extensions': [], 'args': ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-extensions', '--disable-software-rasterizer', '--ignore-certificate-errors', '--allow-running-insecure-content', '--window-size=1920,1080', '--start-maximized', '--disable-blink-features=AutomationControlled']}}}}
+2025-04-09 13:51:35,836 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:54954
+2025-04-09 13:51:36,720 - urllib3.connectionpool - DEBUG - http://localhost:54954 "POST /session HTTP/1.1" 200 890
+2025-04-09 13:51:36,720 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"135.0.7049.42","chrome":{"chromedriverVersion":"134.0.6998.88 (7e3d5c978c6d3a6eda25692cfac7f893a2b20dd0-refs/branch-heads/6998@{#1898})","userDataDir":"/var/folders/qm/tp9n9d216vsg7w4k9zxnvlkw0000gn/T/.org.chromium.Chromium.cE1le7"},"fedcm:accounts":true,"goog:chromeOptions":{"debuggerAddress":"localhost:54963"},"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"mac","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:extension:minPinLength":true,"webauthn:extension:prf":true,"webauthn:virtualAuthenticators":true},"sessionId":"94c90e53819ab9ec304c0fc5d03d0f6a"}} | headers=HTTPHeaderDict({'Content-Length': '890', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:36,720 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:36,720 - BrowserManager - INFO - 成功创建新的浏览器实例: <selenium.webdriver.chrome.webdriver.WebDriver (session="94c90e53819ab9ec304c0fc5d03d0f6a")>
+2025-04-09 13:51:36,720 - BrowserManager - INFO - 打开URL: https://www.baidu.com/
+2025-04-09 13:51:36,721 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54954/session/94c90e53819ab9ec304c0fc5d03d0f6a/url {'url': 'https://www.baidu.com/'}
+2025-04-09 13:51:37,297 - urllib3.connectionpool - DEBUG - http://localhost:54954 "POST /session/94c90e53819ab9ec304c0fc5d03d0f6a/url HTTP/1.1" 200 14
+2025-04-09 13:51:37,297 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:37,297 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:37,297 - BrowserManager - INFO - 成功打开URL: https://www.baidu.com/
+2025-04-09 13:51:37,298 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:51:38,303 - BrowserManager - INFO - 输入文本: id=kw, 文本=马克思主义核心思想
+2025-04-09 13:51:38,303 - BrowserManager - INFO - 查找元素: id=kw
+2025-04-09 13:51:38,303 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54954/session/94c90e53819ab9ec304c0fc5d03d0f6a/element {'using': 'css selector', 'value': '[id="kw"]'}
+2025-04-09 13:51:38,315 - urllib3.connectionpool - DEBUG - http://localhost:54954 "POST /session/94c90e53819ab9ec304c0fc5d03d0f6a/element HTTP/1.1" 200 125
+2025-04-09 13:51:38,316 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.394A3948846005F4E5A60A1F1BD88D78.d.0D6A4EB54824AA33BB6FD24B10150A74.e.7"}} | headers=HTTPHeaderDict({'Content-Length': '125', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:38,316 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:38,316 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54954/session/94c90e53819ab9ec304c0fc5d03d0f6a/element/f.394A3948846005F4E5A60A1F1BD88D78.d.0D6A4EB54824AA33BB6FD24B10150A74.e.7/value {'text': '马克思主义核心思想', 'value': ['马', '克', '思', '主', '义', '核', '心', '思', '想']}
+2025-04-09 13:51:38,404 - urllib3.connectionpool - DEBUG - http://localhost:54954 "POST /session/94c90e53819ab9ec304c0fc5d03d0f6a/element/f.394A3948846005F4E5A60A1F1BD88D78.d.0D6A4EB54824AA33BB6FD24B10150A74.e.7/value HTTP/1.1" 200 14
+2025-04-09 13:51:38,404 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:38,405 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:38,405 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:51:39,410 - BrowserManager - INFO - 点击元素: id=su
+2025-04-09 13:51:39,410 - BrowserManager - INFO - 查找元素: id=su
+2025-04-09 13:51:39,410 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54954/session/94c90e53819ab9ec304c0fc5d03d0f6a/element {'using': 'css selector', 'value': '[id="su"]'}
+2025-04-09 13:51:39,422 - urllib3.connectionpool - DEBUG - http://localhost:54954 "POST /session/94c90e53819ab9ec304c0fc5d03d0f6a/element HTTP/1.1" 200 126
+2025-04-09 13:51:39,423 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.394A3948846005F4E5A60A1F1BD88D78.d.0D6A4EB54824AA33BB6FD24B10150A74.e.23"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:39,423 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:39,423 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:54954/session/94c90e53819ab9ec304c0fc5d03d0f6a/element/f.394A3948846005F4E5A60A1F1BD88D78.d.0D6A4EB54824AA33BB6FD24B10150A74.e.23/click {}
+2025-04-09 13:51:39,459 - urllib3.connectionpool - DEBUG - http://localhost:54954 "POST /session/94c90e53819ab9ec304c0fc5d03d0f6a/element/f.394A3948846005F4E5A60A1F1BD88D78.d.0D6A4EB54824AA33BB6FD24B10150A74.e.23/click HTTP/1.1" 200 14
+2025-04-09 13:51:39,460 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:39,460 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:39,460 - BrowserManager - INFO - 等待 2 秒
+2025-04-09 13:51:56,512 - BrowserManager - INFO - 操作系统类型: mac
+2025-04-09 13:51:56,512 - BrowserManager - INFO - 是否H5项目: no
+2025-04-09 13:51:56,512 - BrowserManager - INFO - 备注信息: 
+2025-04-09 13:51:56,512 - BrowserManager - INFO - start_chrome 方法开始
+2025-04-09 13:51:56,512 - BrowserManager - INFO - 当前全局浏览器实例: None
+2025-04-09 13:51:56,512 - BrowserManager - INFO - 使用驱动路径: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:51:56,512 - BrowserManager - INFO - 创建新的Chrome浏览器实例
+2025-04-09 13:51:56,512 - selenium.webdriver.common.driver_finder - DEBUG - Skipping Selenium Manager; path to chrome driver specified in Service class: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:51:56,514 - selenium.webdriver.common.service - DEBUG - Started executable: `/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver` in a child process with pid: 99889 using 0 to output -3
+2025-04-09 13:51:56,531 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:55184/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'goog:chromeOptions': {'excludeSwitches': ['enable-automation'], 'useAutomationExtension': False, 'extensions': [], 'args': ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-extensions', '--disable-software-rasterizer', '--ignore-certificate-errors', '--allow-running-insecure-content', '--window-size=1920,1080', '--start-maximized', '--disable-blink-features=AutomationControlled']}}}}
+2025-04-09 13:51:56,531 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:55184
+2025-04-09 13:51:57,516 - urllib3.connectionpool - DEBUG - http://localhost:55184 "POST /session HTTP/1.1" 200 890
+2025-04-09 13:51:57,516 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"135.0.7049.42","chrome":{"chromedriverVersion":"134.0.6998.88 (7e3d5c978c6d3a6eda25692cfac7f893a2b20dd0-refs/branch-heads/6998@{#1898})","userDataDir":"/var/folders/qm/tp9n9d216vsg7w4k9zxnvlkw0000gn/T/.org.chromium.Chromium.Al8vMC"},"fedcm:accounts":true,"goog:chromeOptions":{"debuggerAddress":"localhost:55194"},"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"mac","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:extension:minPinLength":true,"webauthn:extension:prf":true,"webauthn:virtualAuthenticators":true},"sessionId":"40196d64437a768dfc32c1d6f8252a6b"}} | headers=HTTPHeaderDict({'Content-Length': '890', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:57,517 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:57,517 - BrowserManager - INFO - 成功创建新的浏览器实例: <selenium.webdriver.chrome.webdriver.WebDriver (session="40196d64437a768dfc32c1d6f8252a6b")>
+2025-04-09 13:51:57,517 - BrowserManager - INFO - 打开URL: https://www.baidu.com/
+2025-04-09 13:51:57,517 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:55184/session/40196d64437a768dfc32c1d6f8252a6b/url {'url': 'https://www.baidu.com/'}
+2025-04-09 13:51:58,172 - urllib3.connectionpool - DEBUG - http://localhost:55184 "POST /session/40196d64437a768dfc32c1d6f8252a6b/url HTTP/1.1" 200 14
+2025-04-09 13:51:58,174 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:58,174 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:58,174 - BrowserManager - INFO - 成功打开URL: https://www.baidu.com/
+2025-04-09 13:51:58,174 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:51:59,176 - BrowserManager - INFO - 输入文本: id=kw, 文本=马克思主义核心思想
+2025-04-09 13:51:59,176 - BrowserManager - INFO - 查找元素: id=kw
+2025-04-09 13:51:59,176 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:55184/session/40196d64437a768dfc32c1d6f8252a6b/element {'using': 'css selector', 'value': '[id="kw"]'}
+2025-04-09 13:51:59,190 - urllib3.connectionpool - DEBUG - http://localhost:55184 "POST /session/40196d64437a768dfc32c1d6f8252a6b/element HTTP/1.1" 200 125
+2025-04-09 13:51:59,191 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.E2DD5888EF95AB07B767655D5024FB81.d.4C9F616095E9CBFCAB84060093D4837D.e.7"}} | headers=HTTPHeaderDict({'Content-Length': '125', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:59,191 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:59,191 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:55184/session/40196d64437a768dfc32c1d6f8252a6b/element/f.E2DD5888EF95AB07B767655D5024FB81.d.4C9F616095E9CBFCAB84060093D4837D.e.7/value {'text': '马克思主义核心思想', 'value': ['马', '克', '思', '主', '义', '核', '心', '思', '想']}
+2025-04-09 13:51:59,290 - urllib3.connectionpool - DEBUG - http://localhost:55184 "POST /session/40196d64437a768dfc32c1d6f8252a6b/element/f.E2DD5888EF95AB07B767655D5024FB81.d.4C9F616095E9CBFCAB84060093D4837D.e.7/value HTTP/1.1" 200 14
+2025-04-09 13:51:59,290 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:51:59,290 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:51:59,290 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:52:00,295 - BrowserManager - INFO - 点击元素: id=su
+2025-04-09 13:52:00,295 - BrowserManager - INFO - 查找元素: id=su
+2025-04-09 13:52:00,295 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:55184/session/40196d64437a768dfc32c1d6f8252a6b/element {'using': 'css selector', 'value': '[id="su"]'}
+2025-04-09 13:52:00,301 - urllib3.connectionpool - DEBUG - http://localhost:55184 "POST /session/40196d64437a768dfc32c1d6f8252a6b/element HTTP/1.1" 200 126
+2025-04-09 13:52:00,301 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.E2DD5888EF95AB07B767655D5024FB81.d.4C9F616095E9CBFCAB84060093D4837D.e.87"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:52:00,301 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:52:00,301 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:55184/session/40196d64437a768dfc32c1d6f8252a6b/element/f.E2DD5888EF95AB07B767655D5024FB81.d.4C9F616095E9CBFCAB84060093D4837D.e.87/click {}
+2025-04-09 13:52:00,332 - urllib3.connectionpool - DEBUG - http://localhost:55184 "POST /session/40196d64437a768dfc32c1d6f8252a6b/element/f.E2DD5888EF95AB07B767655D5024FB81.d.4C9F616095E9CBFCAB84060093D4837D.e.87/click HTTP/1.1" 200 14
+2025-04-09 13:52:00,332 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:52:00,332 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:52:00,332 - BrowserManager - INFO - 等待 2 秒
+2025-04-09 13:54:04,980 - BrowserManager - INFO - 操作系统类型: mac
+2025-04-09 13:54:04,981 - BrowserManager - INFO - 是否H5项目: no
+2025-04-09 13:54:04,981 - BrowserManager - INFO - 备注信息: 
+2025-04-09 13:54:04,981 - BrowserManager - INFO - start_chrome 方法开始
+2025-04-09 13:54:04,981 - BrowserManager - INFO - 当前全局浏览器实例: None
+2025-04-09 13:54:04,981 - BrowserManager - INFO - 使用驱动路径: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:54:04,981 - BrowserManager - INFO - 创建新的Chrome浏览器实例
+2025-04-09 13:54:04,981 - selenium.webdriver.common.driver_finder - DEBUG - Skipping Selenium Manager; path to chrome driver specified in Service class: /Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver
+2025-04-09 13:54:04,984 - selenium.webdriver.common.service - DEBUG - Started executable: `/Users/wang/PycharmProjects/AtouTest_Web/config/chromedriver` in a child process with pid: 100 using 0 to output -3
+2025-04-09 13:54:04,993 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:56405/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'goog:chromeOptions': {'excludeSwitches': ['enable-automation'], 'useAutomationExtension': False, 'extensions': [], 'args': ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-extensions', '--disable-software-rasterizer', '--ignore-certificate-errors', '--allow-running-insecure-content', '--window-size=1920,1080', '--start-maximized', '--disable-blink-features=AutomationControlled']}}}}
+2025-04-09 13:54:04,993 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:56405
+2025-04-09 13:54:06,008 - urllib3.connectionpool - DEBUG - http://localhost:56405 "POST /session HTTP/1.1" 200 890
+2025-04-09 13:54:06,008 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"135.0.7049.42","chrome":{"chromedriverVersion":"134.0.6998.88 (7e3d5c978c6d3a6eda25692cfac7f893a2b20dd0-refs/branch-heads/6998@{#1898})","userDataDir":"/var/folders/qm/tp9n9d216vsg7w4k9zxnvlkw0000gn/T/.org.chromium.Chromium.5uiL8y"},"fedcm:accounts":true,"goog:chromeOptions":{"debuggerAddress":"localhost:56416"},"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"mac","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:extension:minPinLength":true,"webauthn:extension:prf":true,"webauthn:virtualAuthenticators":true},"sessionId":"8725c69370a20d54c6b8c31a64fefb7a"}} | headers=HTTPHeaderDict({'Content-Length': '890', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:54:06,008 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:54:06,009 - BrowserManager - INFO - 成功创建新的浏览器实例: <selenium.webdriver.chrome.webdriver.WebDriver (session="8725c69370a20d54c6b8c31a64fefb7a")>
+2025-04-09 13:54:06,009 - BrowserManager - INFO - 打开URL: https://www.baidu.com/
+2025-04-09 13:54:06,009 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:56405/session/8725c69370a20d54c6b8c31a64fefb7a/url {'url': 'https://www.baidu.com/'}
+2025-04-09 13:54:06,641 - urllib3.connectionpool - DEBUG - http://localhost:56405 "POST /session/8725c69370a20d54c6b8c31a64fefb7a/url HTTP/1.1" 200 14
+2025-04-09 13:54:06,644 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:54:06,644 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:54:06,644 - BrowserManager - INFO - 成功打开URL: https://www.baidu.com/
+2025-04-09 13:54:06,644 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:54:07,650 - BrowserManager - INFO - 输入文本: id=kw, 文本=马克思主义核心思想
+2025-04-09 13:54:07,651 - BrowserManager - INFO - 查找元素: id=kw
+2025-04-09 13:54:07,651 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:56405/session/8725c69370a20d54c6b8c31a64fefb7a/element {'using': 'css selector', 'value': '[id="kw"]'}
+2025-04-09 13:54:07,666 - urllib3.connectionpool - DEBUG - http://localhost:56405 "POST /session/8725c69370a20d54c6b8c31a64fefb7a/element HTTP/1.1" 200 125
+2025-04-09 13:54:07,667 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.E054925BF10B6EBF2F32463D6EA12A11.d.8853309994BCA3857661723D65963195.e.6"}} | headers=HTTPHeaderDict({'Content-Length': '125', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:54:07,667 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:54:07,667 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:56405/session/8725c69370a20d54c6b8c31a64fefb7a/element/f.E054925BF10B6EBF2F32463D6EA12A11.d.8853309994BCA3857661723D65963195.e.6/value {'text': '马克思主义核心思想', 'value': ['马', '克', '思', '主', '义', '核', '心', '思', '想']}
+2025-04-09 13:54:07,821 - urllib3.connectionpool - DEBUG - http://localhost:56405 "POST /session/8725c69370a20d54c6b8c31a64fefb7a/element/f.E054925BF10B6EBF2F32463D6EA12A11.d.8853309994BCA3857661723D65963195.e.6/value HTTP/1.1" 200 14
+2025-04-09 13:54:07,822 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:54:07,822 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:54:07,822 - BrowserManager - INFO - 等待 1 秒
+2025-04-09 13:54:08,824 - BrowserManager - INFO - 点击元素: id=su
+2025-04-09 13:54:08,825 - BrowserManager - INFO - 查找元素: id=su
+2025-04-09 13:54:08,825 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:56405/session/8725c69370a20d54c6b8c31a64fefb7a/element {'using': 'css selector', 'value': '[id="su"]'}
+2025-04-09 13:54:08,837 - urllib3.connectionpool - DEBUG - http://localhost:56405 "POST /session/8725c69370a20d54c6b8c31a64fefb7a/element HTTP/1.1" 200 126
+2025-04-09 13:54:08,837 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.E054925BF10B6EBF2F32463D6EA12A11.d.8853309994BCA3857661723D65963195.e.33"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:54:08,838 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:54:08,838 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:56405/session/8725c69370a20d54c6b8c31a64fefb7a/element/f.E054925BF10B6EBF2F32463D6EA12A11.d.8853309994BCA3857661723D65963195.e.33/click {}
+2025-04-09 13:54:08,876 - urllib3.connectionpool - DEBUG - http://localhost:56405 "POST /session/8725c69370a20d54c6b8c31a64fefb7a/element/f.E054925BF10B6EBF2F32463D6EA12A11.d.8853309994BCA3857661723D65963195.e.33/click HTTP/1.1" 200 14
+2025-04-09 13:54:08,877 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-04-09 13:54:08,877 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2025-04-09 13:54:08,877 - BrowserManager - INFO - 等待 2 秒
