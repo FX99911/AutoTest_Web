@@ -26,9 +26,9 @@ class Test2:
         #allure.dynamic.description('说明：这是一个说明描述，也可以加载这里')
         with allure.step('第一步：测试步骤1'):  # 加入测试用例的写法
                  # 加入文件附件（错误截图）
-                allure.attach.file(source="picture/p1.jpg",name='输入用户名截图',attachment_type=allure.attachment_type.JPG,extension="jpg")
+                allure.attach.file(source="cases_screenshot/p1.jpg",name='输入用户名截图',attachment_type=allure.attachment_type.JPG,extension="jpg")
         with allure.step('第二步：测试步骤2'):
-                allure.attach.file(source="picture/p1.jpg",name='输入用户名截图',attachment_type=allure.attachment_type.JPG,extension="jpg")
+                allure.attach.file(source="cases_screenshot/p1.jpg",name='输入用户名截图',attachment_type=allure.attachment_type.JPG,extension="jpg")
         with allure.step('第三步：测试步骤3'): pass
 
         print('测试用例2')

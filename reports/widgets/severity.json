@@ -1,1 +1,1 @@
-[]
+[{"uid":"7f66154968d6e453","name":"测试用例名：test_01_正确_登陆","time":{"start":1744379922740,"stop":1744379930308,"duration":7568},"status":"passed","severity":"normal"},{"uid":"c725629de15dc101","name":"测试用例名：test_03_百度_登陆","time":{"start":1744379934944,"stop":1744379938648,"duration":3704},"status":"passed","severity":"normal"},{"uid":"137da63899d8c50c","name":"测试用例名：test_02_QQ_登陆","time":{"start":1744379930310,"stop":1744379934943,"duration":4633},"status":"passed","severity":"normal"}]

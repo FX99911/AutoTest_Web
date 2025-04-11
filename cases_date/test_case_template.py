@@ -1,10 +1,10 @@
+import os
 import time
 import allure
 from web_keys.seleniuum_device.keys import Keys
 from web_keys.read_excel.dist_to_variable import convert_dict_to_variables, get_all_steps
 from web_keys.template_method.get_now_file_name import get_now_file_name
 from web_keys.read_excel.modify_excel_dict import  convert_list_to_by
-from web_keys.seleniuum_device.browser_manager import browser_manager
 # 测试用例数据
 project_info = {}
 
@@ -17,8 +17,8 @@ operation_steps = {}
 project_name = project_info['项目名称'][0]
 test_module	= project_info['模块名称'][0]
 test_points = project_info['测试点'][0]
-cases_name = get_now_file_name()
-
+cases_name = get_now_file_name()  #文件名
+print(cases_name)
 
 # # 步骤变量定义(暂时不需要)
 # all_steps = convert_dict_to_variables(operation_steps)
@@ -26,9 +26,10 @@ cases_name = get_now_file_name()
 # 获取列表
 all_steps = get_all_steps(operation_steps)
 
+picture_url = os.path.join("reports/cases_screenshot", project_name, test_module, test_points)
+picture_name = f'{cases_name}.jpg'
 
 # =====================以下是测试用例模板====================
-
 ########################
 
 @allure.epic(f'项目名称：{project_name}')
@@ -65,6 +66,10 @@ class Test_Template(Keys):
                     self.wait(1)
             elif '断言' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
+                    # 加入文件附件（错误截图）
+                    picture= self.take_screenshot(picture_url,picture_name)
+                    allure.attach.file(source=picture, name=f'{picture_name}',
+                                       attachment_type=allure.attachment_type.JPG, extension="jpg")
                     assert self.text(step[1], step[2]) == step[3]
             elif '关闭浏览器' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
@@ -84,9 +89,11 @@ class Test_Template(Keys):
             elif '前进下一页' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.driver.forward()
-            elif '截图' in step[0] :
+            elif '截图' in step[0]:
                 with allure.step(f'第{num}步：{step[0]}'):
-                    self.refresh()
+                    picture= self.take_screenshot(picture_url,picture_name)
+                    allure.attach.file(source=picture, name=f'{picture_name}',
+                                       attachment_type=allure.attachment_type.JPG, extension="jpg")
 
 
 
