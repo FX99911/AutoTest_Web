@@ -343,9 +343,9 @@ class Keys:
             # 获取当前时间并将其格式化为指定的字符串格式
             time_str = datetime.now().strftime("%Y%m%d_%H%M%S")
             # 若未提供文件名，使用时间戳生成一个默认的文件名
-            file_name = f"screenshot_{time_str}.jpg"
+            file_name = f"screenshot_{time_str}.png"
         else:
-            file_name = f"{file_name}.jpg"
+            file_name = f"{file_name}.png"
 
         # 定义截图保存的目录路径，将home变量（假设已定义）和 picture_url组合起来
         screenshot_dir = os.path.join(home, picture_url)

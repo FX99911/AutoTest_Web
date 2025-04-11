@@ -27,7 +27,7 @@ print(cases_name)
 all_steps = get_all_steps(operation_steps)
 
 picture_url = os.path.join("reports/cases_screenshot", project_name, test_module, test_points)
-picture_name = f'{cases_name}.jpg'
+picture_name = cases_name
 
 # =====================以下是测试用例模板====================
 ########################
