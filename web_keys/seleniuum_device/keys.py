@@ -92,7 +92,7 @@ class Keys:
     #     Returns:
     #         WebDriver: 配置好的Chrome WebDriver实例
     #     """
-    #     if pc_type == 'win':
+    #     if pc_type == 'window':
     #         try:
     #             # 创建设置浏览器对象
     #             self.opt1 = Options()

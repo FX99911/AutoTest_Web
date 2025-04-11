@@ -66,7 +66,7 @@ class BrowserManager:
         if not hasattr(self, 'initialized'):
 
             # 根据操作系统选择chromedriver路径
-            if self.pc_type == 'win':
+            if self.pc_type == 'window':
                 self.chromedriver_path = self.Win_chromedriver_url
             elif self.pc_type == 'mac':
                 self.chromedriver_path = self.Mac_chromedriver_url
