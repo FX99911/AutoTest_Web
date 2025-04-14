@@ -15,6 +15,7 @@ import threading
 import time
 import psutil
 import re
+import shutil
 from web_keys.environment_info.montage_url import home
 from run_main import start_run_auto_test
 
@@ -473,6 +474,25 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
     # 用于存储当前运行的进程
     current_process = None
 
+    def cleanup_browser_cache():
+        """
+        清理浏览器缓存
+        """
+        try:
+            # 清理Chrome缓存目录
+            cache_paths = [
+                os.path.expanduser("~/Library/Caches/Google/Chrome"),
+                os.path.expanduser("~/Library/Application Support/Google/Chrome/Default/Cache"),
+                os.path.expanduser("~/Library/Application Support/Google/Chrome/Default/Code Cache")
+            ]
+
+            for path in cache_paths:
+                if os.path.exists(path):
+                    shutil.rmtree(path)
+                    print(f"已清理缓存目录: {path}")
+        except Exception as e:
+            print(f"清理缓存时出错: {str(e)}")
+
     def cleanup_chromedriver():
         """
         清理所有chromedriver进程
@@ -500,33 +520,98 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
 
         # 解析日志获取测试结果
         log_content = log_text.get(1.0, tk.END)
-        passed = len(re.findall(r'PASSED', log_content))
-        failed = len(re.findall(r'FAILED', log_content))
-        error = len(re.findall(r'ERROR', log_content))
 
-        # 显示测试结果统计
-        ttk.Label(result_window, text=f"测试执行完成！", style="Result.TLabel").pack(pady=10)
-        ttk.Label(result_window, text=f"成功: {passed} 条", style="Result.TLabel").pack(pady=5)
-        ttk.Label(result_window, text=f"失败: {failed} 条", style="Result.TLabel").pack(pady=5)
-        ttk.Label(result_window, text=f"错误: {error} 条", style="Result.TLabel").pack(pady=5)
+        # 查找测试结果统计行
+        result_line = None
+        for line in log_content.split('\n'):
+            if 'passed' in line.lower() and 'in' in line:
+                result_line = line
+                break
+
+        if result_line:
+            # 解析结果行
+            passed = 0
+            failed = 0
+            error = 0
+            skipped = 0
+
+            # 使用正则表达式提取数字
+            import re
+            passed_match = re.search(r'(\d+)\s+passed', result_line)
+            failed_match = re.search(r'(\d+)\s+failed', result_line)
+            error_match = re.search(r'(\d+)\s+error', result_line)
+            skipped_match = re.search(r'(\d+)\s+skipped', result_line)
+
+            if passed_match:
+                passed = int(passed_match.group(1))
+            if failed_match:
+                failed = int(failed_match.group(1))
+            if error_match:
+                error = int(error_match.group(1))
+            if skipped_match:
+                skipped = int(skipped_match.group(1))
+
+            # 显示测试结果统计
+            ttk.Label(result_window, text=f"测试执行完成！", style="Result.TLabel").pack(pady=10)
+            ttk.Label(result_window, text=f"成功: {passed} 条", style="Result.TLabel").pack(pady=5)
+            ttk.Label(result_window, text=f"失败: {failed} 条", style="Result.TLabel").pack(pady=5)
+            ttk.Label(result_window, text=f"错误: {error} 条", style="Result.TLabel").pack(pady=5)
+            if skipped > 0:
+                ttk.Label(result_window, text=f"跳过: {skipped} 条", style="Result.TLabel").pack(pady=5)
+
+            # 如果有失败或错误，显示详细信息
+            if failed > 0 or error > 0:
+                error_frame = ttk.Frame(result_window)
+                error_frame.pack(fill=tk.X, padx=10, pady=10)
+
+                # 创建错误信息文本框
+                error_text = tk.Text(error_frame, height=10, width=50)
+                error_text.pack(fill=tk.BOTH, expand=True)
+
+                # 添加滚动条
+                error_scrollbar = ttk.Scrollbar(error_text)
+                error_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+                error_text.config(yscrollcommand=error_scrollbar.set)
+                error_scrollbar.config(command=error_text.yview)
+
+                # 设置文本框样式
+                error_text.config(bg="#2b2b2b", fg="white", font=("Consolas", 10))
+
+                # 提取错误信息
+                error_lines = []
+                for line in log_content.split('\n'):
+                    if 'error' in line.lower() or 'failed' in line.lower():
+                        error_lines.append(line)
+
+                # 显示错误信息
+                for line in error_lines:
+                    error_text.insert(tk.END, line + '\n')
+                error_text.config(state=tk.DISABLED)
 
         # 获取最新的测试报告路径
         reports_dir = os.path.join(home, 'reports')
         latest_report = None
         latest_time = 0
 
-        for file in os.listdir(reports_dir):
-            if file.endswith('.html'):
-                file_path = os.path.join(reports_dir, file)
-                file_time = os.path.getmtime(file_path)
-                if file_time > latest_time:
-                    latest_time = file_time
-                    latest_report = file_path
+        # 查找最新的HTML报告
+        for root, dirs, files in os.walk(reports_dir):
+            for file in files:
+                if file.endswith('.html'):
+                    file_path = os.path.join(root, file)
+                    file_time = os.path.getmtime(file_path)
+                    if file_time > latest_time:
+                        latest_time = file_time
+                        latest_report = file_path
 
         if latest_report:
             def open_report():
-                import webbrowser
-                webbrowser.open('file://' + latest_report)
+                try:
+                    import webbrowser
+                    # 使用绝对路径打开报告
+                    report_url = f"file://{os.path.abspath(latest_report)}"
+                    webbrowser.open(report_url)
+                except Exception as e:
+                    messagebox.showerror("错误", f"打开报告失败: {str(e)}")
 
             report_link = ttk.Label(
                 result_window,
@@ -566,7 +651,8 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
                 # 等待进程结束
                 current_process.wait()
 
-                # 清理chromedriver进程
+                # 清理浏览器缓存和chromedriver进程
+                cleanup_browser_cache()
                 cleanup_chromedriver()
 
                 # 显示测试结果
@@ -603,6 +689,11 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
                 current_process.terminate()
                 log_text.insert(tk.END, "\n测试执行已停止\n")
                 log_text.see(tk.END)
+
+                # 清理浏览器缓存和chromedriver进程
+                cleanup_browser_cache()
+                cleanup_chromedriver()
+
             except Exception as e:
                 log_text.insert(tk.END, f"停止执行时出错: {str(e)}\n")
                 log_text.see(tk.END)
