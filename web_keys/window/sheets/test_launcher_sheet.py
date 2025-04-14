@@ -13,6 +13,8 @@ import os
 import subprocess
 import threading
 import time
+import psutil
+import re
 from web_keys.environment_info.montage_url import home
 from run_main import start_run_auto_test
 
@@ -407,17 +409,17 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
                 f.writelines(lines)
 
             print("\n已更新pytest.ini文件")
-            messagebox.showinfo("成功", "选择保存成功！")
+            messagebox.showinfo("成功", "测试用例选择已成功保存！")
         except Exception as e:
             print(f"\n更新pytest.ini文件时出错: {e}")
-            messagebox.showerror("错误", f"保存时出错：{str(e)}")
+            messagebox.showerror("错误", f"保存测试用例选择时出错：{str(e)}")
 
         return output_list
 
     remove_button = ttk.Button(selected_buttons_frame, text="取消选择", command=remove_selected, width=15)
     remove_button.pack(side=tk.LEFT, padx=5)
 
-    confirm_button = ttk.Button(selected_buttons_frame, text="保存", command=confirm_selection, width=15)
+    confirm_button = ttk.Button(selected_buttons_frame, text="确定", command=confirm_selection, width=15)
     confirm_button.pack(side=tk.LEFT, padx=5)
 
     # 右侧框架
@@ -451,11 +453,163 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
     submit_frame = ttk.Frame(right_frame)
     submit_frame.pack(fill=tk.X, pady=20)
 
+    # 添加日志显示区域
+    log_frame = ttk.LabelFrame(right_frame, text="执行日志", padding=(10, 5))
+    log_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
+
+    # 创建日志文本框
+    log_text = tk.Text(log_frame, wrap=tk.WORD, height=15)
+    log_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+    # 添加滚动条
+    log_scrollbar = ttk.Scrollbar(log_text)
+    log_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    log_text.config(yscrollcommand=log_scrollbar.set)
+    log_scrollbar.config(command=log_text.yview)
+
+    # 设置日志文本框样式
+    log_text.config(bg="#2b2b2b", fg="white", font=("Consolas", 10))
+
+    # 用于存储当前运行的进程
+    current_process = None
+
+    def cleanup_chromedriver():
+        """
+        清理所有chromedriver进程
+        """
+        for proc in psutil.process_iter(['pid', 'name']):
+            try:
+                if 'chromedriver' in proc.info['name'].lower():
+                    proc.terminate()
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                pass
+
+    def show_test_results():
+        """
+        显示测试结果统计窗口
+        """
+        # 创建结果窗口
+        result_window = tk.Toplevel()
+        result_window.title("测试执行结果")
+        result_window.geometry("500x300")
+
+        # 设置窗口样式
+        style = ttk.Style()
+        style.configure("Result.TLabel", font=("Arial", 12))
+        style.configure("Link.TLabel", font=("Arial", 12, "underline"), foreground="blue")
+
+        # 解析日志获取测试结果
+        log_content = log_text.get(1.0, tk.END)
+        passed = len(re.findall(r'PASSED', log_content))
+        failed = len(re.findall(r'FAILED', log_content))
+        error = len(re.findall(r'ERROR', log_content))
+
+        # 显示测试结果统计
+        ttk.Label(result_window, text=f"测试执行完成！", style="Result.TLabel").pack(pady=10)
+        ttk.Label(result_window, text=f"成功: {passed} 条", style="Result.TLabel").pack(pady=5)
+        ttk.Label(result_window, text=f"失败: {failed} 条", style="Result.TLabel").pack(pady=5)
+        ttk.Label(result_window, text=f"错误: {error} 条", style="Result.TLabel").pack(pady=5)
+
+        # 获取最新的测试报告路径
+        reports_dir = os.path.join(home, 'reports')
+        latest_report = None
+        latest_time = 0
+
+        for file in os.listdir(reports_dir):
+            if file.endswith('.html'):
+                file_path = os.path.join(reports_dir, file)
+                file_time = os.path.getmtime(file_path)
+                if file_time > latest_time:
+                    latest_time = file_time
+                    latest_report = file_path
+
+        if latest_report:
+            def open_report():
+                import webbrowser
+                webbrowser.open('file://' + latest_report)
+
+            report_link = ttk.Label(
+                result_window,
+                text="点击查看测试报告",
+                style="Link.TLabel",
+                cursor="hand2"
+            )
+            report_link.pack(pady=20)
+            report_link.bind("<Button-1>", lambda e: open_report())
+
     def start_execution():
         """
         开始执行测试
         """
-        start_run_auto_test()
+        # 清空日志
+        log_text.delete(1.0, tk.END)
+
+        # 启动测试进程
+        def run_test():
+            global current_process
+            try:
+                # 使用subprocess.Popen启动start_run_auto_test
+                current_process = subprocess.Popen(
+                    ["python", "-c", "from run_main import start_run_auto_test; start_run_auto_test()"],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    bufsize=1
+                )
+
+                # 实时读取输出
+                for line in current_process.stdout:
+                    # 在主线程中更新UI
+                    log_text.after(0, lambda l=line: update_log(l))
+                    log_text.see(tk.END)
+
+                # 等待进程结束
+                current_process.wait()
+
+                # 清理chromedriver进程
+                cleanup_chromedriver()
+
+                # 显示测试结果
+                log_text.after(0, show_test_results)
+
+                # 更新按钮状态
+                submit_button.config(state=tk.NORMAL)
+                stop_button.config(state=tk.DISABLED)
+
+            except Exception as e:
+                log_text.insert(tk.END, f"执行出错: {str(e)}\n")
+                log_text.see(tk.END)
+                submit_button.config(state=tk.NORMAL)
+                stop_button.config(state=tk.DISABLED)
+
+        def update_log(line):
+            log_text.insert(tk.END, line)
+            log_text.see(tk.END)
+
+        # 禁用开始按钮，启用停止按钮
+        submit_button.config(state=tk.DISABLED)
+        stop_button.config(state=tk.NORMAL)
+
+        # 在新线程中运行测试
+        threading.Thread(target=run_test, daemon=True).start()
+
+    def stop_execution():
+        """
+        停止执行测试
+        """
+        global current_process
+        if current_process:
+            try:
+                current_process.terminate()
+                log_text.insert(tk.END, "\n测试执行已停止\n")
+                log_text.see(tk.END)
+            except Exception as e:
+                log_text.insert(tk.END, f"停止执行时出错: {str(e)}\n")
+                log_text.see(tk.END)
+            finally:
+                current_process = None
+                submit_button.config(state=tk.NORMAL)
+                stop_button.config(state=tk.DISABLED)
 
     # 执行按钮
     submit_button = ttk.Button(
@@ -466,5 +620,16 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
         width=15
     )
     submit_button.pack(side=tk.LEFT, padx=10)
+
+    # 停止按钮
+    stop_button = ttk.Button(
+        submit_frame,
+        text="停止执行",
+        command=stop_execution,
+        style="Accent.TButton",
+        width=15,
+        state=tk.DISABLED
+    )
+    stop_button.pack(side=tk.LEFT, padx=10)
 
     return widget_dict

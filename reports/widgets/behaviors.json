@@ -1,1 +1,1 @@
-{"total":1,"items":[{"uid":"18ebaf457633ea65cb55a66a5bbe3f17","name":"项目名称：六代战斗机项目","statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1}}]}
+{"total":2,"items":[{"uid":"18ebaf457633ea65cb55a66a5bbe3f17","name":"项目名称：六代战斗机项目","statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1}},{"uid":"3b303e0cbab25d41de5b8da14371d120","name":"项目名称：测试的项目","statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1}}]}

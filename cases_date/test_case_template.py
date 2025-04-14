@@ -59,11 +59,9 @@ class Test_Template(Keys):
             elif '输入' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.input(step[1], step[2], step[3])
-                    self.wait(1)
             elif '点击' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.click(step[1], step[2])
-                    self.wait(1)
             elif '断言' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     # 加入文件附件（错误截图）

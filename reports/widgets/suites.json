@@ -1,1 +1,1 @@
-{"total":1,"items":[{"uid":"d40f806333164855a9ec4a39e5d0a28e","name":"cases_run.六代战斗机项目.导航.导航到-美国","statistic":{"failed":0,"broken":0,"skipped":0,"passed":3,"unknown":0,"total":3}}]}
+{"total":2,"items":[{"uid":"d40f806333164855a9ec4a39e5d0a28e","name":"cases_run.六代战斗机项目.导航.导航到-美国","statistic":{"failed":0,"broken":0,"skipped":0,"passed":3,"unknown":0,"total":3}},{"uid":"b65c41a72c7dcd65ba7b98773538a850","name":"cases_run.测试的项目.首页.登陆","statistic":{"failed":0,"broken":0,"skipped":0,"passed":3,"unknown":0,"total":3}}]}
