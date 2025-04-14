@@ -10,6 +10,9 @@ run_time  = datetime.now().strftime("%Y-%m-%d-%H%M")
 
 def start_run_auto_test():
 
+    print('当前启动Pytest路径：',os.getcwd())
+    os.chdir(home)
+    print('切换到项目根目录：', home)
 
     # 执行 pytest 测试
     pytest.main()
