@@ -1,54 +1,51 @@
-import os
-
-from web_keys.environment_info.montage_url import home
-from web_keys.windown.start_windown import start_windown_config
 import pytest
-import sys
-from web_keys.windown.log_window import LogWindow, StdoutRedirector
-import io
+import subprocess
+import time
+from web_keys.file_tool.file_utils import *
+from web_keys.environment_info.montage_url import home
 
-#----------#获取环境变量#----------------------
-# 不用
-#----------#用环境变量 拼接url,#----------------------
+# 获取执行开始时间：
 
-arrure_report_url = (f'{home}reports/index.html')
+run_time  = datetime.now().strftime("%Y-%m-%d-%H%M")
+
+def start_run_auto_test():
 
 
-swc = start_windown_config()
+    # 执行 pytest 测试
+    pytest.main()
 
-if __name__ == '__main__':
-    if swc:
-        print('关闭窗口')
-    else:
-        # 设置要打开的文件路径为 allure 生成的报告的 index.html 文件
-        file_to_open = arrure_report_url
+    # 等待一段时间，确保测试结果文件生成
+    time.sleep(3)
 
-        # 重定向输出到内存缓冲区
-        old_stdout = sys.stdout
-        new_stdout = io.StringIO()
-        sys.stdout = new_stdout
+    # 构建命令列表
+    # 此列表为 allure generate 命令及其参数，用于生成 Allure 报告
+    # --single-file 表示生成单文件报告
+    # allure-results 是测试结果的来源目录
+    # -o 指定输出目录，这里有两个输出目录，分别是变量 output_directory 和 ./reports
+    # ./temps 也是测试结果的来源目录
+    # --clean 表示在生成报告前清空输出目录
+    command = ['allure', 'generate', '--single-file', 'allure-results','./temps', '-o', './reports', '--clean']
 
-        try:
-            # 执行 pytest 测试框架，运行项目中的自动化测试用例
-            pytest.main()
-        except Exception as e:
-            print(f"执行测试时出现错误: {e}")
+    try:
+        # 执行命令
+        # 使用 subprocess.run 函数执行命令列表
+        # check=True 表示如果命令执行失败（返回非零退出码），则抛出 CalledProcessError 异常
+        # text=True 表示以文本模式处理输入输出
+        # capture_output=True 表示捕获命令的标准输出和标准错误输出
+        result = subprocess.run(command, check=True, text=True, capture_output=True)
+        print("命令执行成功，输出信息：")
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"命令执行失败，错误信息：{e.stderr}")
 
-        # 生成报告
-        os.system('allure generate ./temps -o ./reports --clean')
+    # 创建一个时间目录：
+    reports_record_path = create_timestamp_dir(f'{home}/reports_record',run_time)
 
-        # 获取测试输出
-        test_output = new_stdout.getvalue()
-        # 恢复标准输出
-        sys.stdout = old_stdout
+    time.sleep(1)
+    # 复制报告到这
+    copy_directory(f'{home}/reports',reports_record_path)
+    print(f'测试报告记录在：{reports_record_path}')
+    return reports_record_path
 
-        # 创建日志窗口实例，用于显示测试相关日志
-        log_window = LogWindow(file_to_open)
-        # 将标准输出流重定向到自定义的 StdoutRedirector 类实例
-        sys.stdout = StdoutRedirector(log_window)
 
-        # 打印测试输出到日志窗口
-        print(test_output)
-
-        # 启动日志窗口的主事件循环，显示之前收集到的所有日志信息
-        log_window.start()
+start_run_auto_test()
