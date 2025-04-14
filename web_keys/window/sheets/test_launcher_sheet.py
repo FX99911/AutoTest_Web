@@ -342,8 +342,8 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
             else:
                 full_path = item_text
 
-            # 如果是目录，添加到选中列表
-            if os.path.isdir(item_path):
+            # 如果是目录且不是__pycache__，添加到选中列表
+            if os.path.isdir(item_path) and not item_text.startswith("__pycache__"):
                 selected_items.append({
                     "type": "directory",
                     "name": item_text,
