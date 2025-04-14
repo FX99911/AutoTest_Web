@@ -327,6 +327,29 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
         for item in selected_items:
             selected_tree.delete(item)
 
+    def show_temporary_message(message, duration=3000):
+        """
+        显示临时消息，自动消失
+        """
+        message_window = tk.Toplevel()
+        message_window.title("提示")
+        message_window.geometry("300x100")
+        message_window.attributes('-topmost', True)
+
+        # 设置窗口样式
+        style = ttk.Style()
+        style.configure("Message.TLabel", font=("Arial", 12))
+
+        # 显示消息
+        ttk.Label(
+            message_window,
+            text=message,
+            style="Message.TLabel"
+        ).pack(expand=True)
+
+        # 设置定时关闭
+        message_window.after(duration, message_window.destroy)
+
     def confirm_selection():
         """
         确认选择并输出已选择的项目列表
@@ -362,6 +385,11 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
         # 收集所有项目
         for item_id in selected_tree.get_children():
             collect_items(item_id)
+
+        # 检查是否选择了测试用例
+        if not selected_items:
+            messagebox.showwarning("警告", "请选择测试用例")
+            return
 
         # 构建输出列表
         output_list = []
@@ -508,16 +536,6 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
         """
         显示测试结果统计窗口
         """
-        # 创建结果窗口
-        result_window = tk.Toplevel()
-        result_window.title("测试执行结果")
-        result_window.geometry("500x300")
-
-        # 设置窗口样式
-        style = ttk.Style()
-        style.configure("Result.TLabel", font=("Arial", 12))
-        style.configure("Link.TLabel", font=("Arial", 12, "underline"), foreground="blue")
-
         # 解析日志获取测试结果
         log_content = log_text.get(1.0, tk.END)
 
@@ -551,76 +569,46 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
             if skipped_match:
                 skipped = int(skipped_match.group(1))
 
-            # 显示测试结果统计
-            ttk.Label(result_window, text=f"测试执行完成！", style="Result.TLabel").pack(pady=10)
-            ttk.Label(result_window, text=f"成功: {passed} 条", style="Result.TLabel").pack(pady=5)
-            ttk.Label(result_window, text=f"失败: {failed} 条", style="Result.TLabel").pack(pady=5)
-            ttk.Label(result_window, text=f"错误: {error} 条", style="Result.TLabel").pack(pady=5)
+            # 构建结果消息
+            result_message = f"测试执行完成！\n\n"
+            result_message += f"成功: {passed} 条\n"
+            result_message += f"失败: {failed} 条\n"
+            result_message += f"错误: {error} 条\n"
             if skipped > 0:
-                ttk.Label(result_window, text=f"跳过: {skipped} 条", style="Result.TLabel").pack(pady=5)
+                result_message += f"跳过: {skipped} 条\n"
 
-            # 如果有失败或错误，显示详细信息
-            if failed > 0 or error > 0:
-                error_frame = ttk.Frame(result_window)
-                error_frame.pack(fill=tk.X, padx=10, pady=10)
+            # 获取最新的测试报告路径
+            reports_dir = os.path.join(home, 'reports')
+            latest_report = None
+            latest_time = 0
 
-                # 创建错误信息文本框
-                error_text = tk.Text(error_frame, height=10, width=50)
-                error_text.pack(fill=tk.BOTH, expand=True)
+            # 查找最新的HTML报告
+            for root, dirs, files in os.walk(reports_dir):
+                for file in files:
+                    if file.endswith('.html'):
+                        file_path = os.path.join(root, file)
+                        file_time = os.path.getmtime(file_path)
+                        if file_time > latest_time:
+                            latest_time = file_time
+                            latest_report = file_path
 
-                # 添加滚动条
-                error_scrollbar = ttk.Scrollbar(error_text)
-                error_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-                error_text.config(yscrollcommand=error_scrollbar.set)
-                error_scrollbar.config(command=error_text.yview)
+            if latest_report:
+                def open_report():
+                    try:
+                        import webbrowser
+                        # 使用绝对路径打开报告
+                        report_url = f"file://{os.path.abspath(latest_report)}"
+                        print(f"正在打开报告: {report_url}")  # 调试信息
+                        webbrowser.open(report_url)
+                    except Exception as e:
+                        print(f"打开报告失败: {str(e)}")  # 调试信息
+                        messagebox.showerror("错误", f"打开报告失败: {str(e)}")
 
-                # 设置文本框样式
-                error_text.config(bg="#2b2b2b", fg="white", font=("Consolas", 10))
-
-                # 提取错误信息
-                error_lines = []
-                for line in log_content.split('\n'):
-                    if 'error' in line.lower() or 'failed' in line.lower():
-                        error_lines.append(line)
-
-                # 显示错误信息
-                for line in error_lines:
-                    error_text.insert(tk.END, line + '\n')
-                error_text.config(state=tk.DISABLED)
-
-        # 获取最新的测试报告路径
-        reports_dir = os.path.join(home, 'reports')
-        latest_report = None
-        latest_time = 0
-
-        # 查找最新的HTML报告
-        for root, dirs, files in os.walk(reports_dir):
-            for file in files:
-                if file.endswith('.html'):
-                    file_path = os.path.join(root, file)
-                    file_time = os.path.getmtime(file_path)
-                    if file_time > latest_time:
-                        latest_time = file_time
-                        latest_report = file_path
-
-        if latest_report:
-            def open_report():
-                try:
-                    import webbrowser
-                    # 使用绝对路径打开报告
-                    report_url = f"file://{os.path.abspath(latest_report)}"
-                    webbrowser.open(report_url)
-                except Exception as e:
-                    messagebox.showerror("错误", f"打开报告失败: {str(e)}")
-
-            report_link = ttk.Label(
-                result_window,
-                text="点击查看测试报告",
-                style="Link.TLabel",
-                cursor="hand2"
-            )
-            report_link.pack(pady=20)
-            report_link.bind("<Button-1>", lambda e: open_report())
+                # 显示结果并询问是否查看报告
+                if messagebox.askyesno("测试执行完成", result_message + "\n是否查看测试报告？"):
+                    open_report()
+            else:
+                messagebox.showinfo("测试执行完成", result_message + "\n未找到测试报告文件。")
 
     def start_execution():
         """
@@ -693,6 +681,9 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
                 # 清理浏览器缓存和chromedriver进程
                 cleanup_browser_cache()
                 cleanup_chromedriver()
+
+                # 显示停止成功提示
+                messagebox.showinfo("提示", "测试执行已停止")
 
             except Exception as e:
                 log_text.insert(tk.END, f"停止执行时出错: {str(e)}\n")

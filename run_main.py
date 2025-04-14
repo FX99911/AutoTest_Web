@@ -11,6 +11,6 @@ def start_run_auto_test():
     pytest.main()
     time.sleep(3)
     # 根据temps下的json文件，在reports下生成报告，每次执行前清空
-    os.system('allure generate ./temps -o ./reports --clean')
+    os.system('allure generate --single-file allure-results ./temps -o ./reports --clean')
 
-#start_run_auto_test()
+start_run_auto_test()
