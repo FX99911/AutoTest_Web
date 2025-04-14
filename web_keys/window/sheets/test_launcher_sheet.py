@@ -407,15 +407,17 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
                 f.writelines(lines)
 
             print("\n已更新pytest.ini文件")
+            messagebox.showinfo("成功", "选择保存成功！")
         except Exception as e:
             print(f"\n更新pytest.ini文件时出错: {e}")
+            messagebox.showerror("错误", f"保存时出错：{str(e)}")
 
         return output_list
 
     remove_button = ttk.Button(selected_buttons_frame, text="取消选择", command=remove_selected, width=15)
     remove_button.pack(side=tk.LEFT, padx=5)
 
-    confirm_button = ttk.Button(selected_buttons_frame, text="确定", command=confirm_selection, width=15)
+    confirm_button = ttk.Button(selected_buttons_frame, text="保存", command=confirm_selection, width=15)
     confirm_button.pack(side=tk.LEFT, padx=5)
 
     # 右侧框架
