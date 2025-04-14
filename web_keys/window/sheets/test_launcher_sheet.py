@@ -14,6 +14,7 @@ import subprocess
 import threading
 import time
 from web_keys.environment_info.montage_url import home
+from run_main import start_run_auto_test
 
 # 测试用例文件目录路径
 CASES_DATE_DIR = os.path.join(home, 'cases_date')
@@ -21,22 +22,6 @@ CASES_DATE_DIR = os.path.join(home, 'cases_date')
 REPORTS_DIR = os.path.join(home, 'reports')
 # 目录树根路径
 DIR_TREE_ROOT_PATH = os.path.join(home, 'cases_run')
-
-def get_xlsx_files_in_cases_date():
-    """
-    获取cases_date目录下所有的xlsx文件
-
-    Returns:
-        list: xlsx文件列表，如果目录不存在会先创建
-    """
-    if not os.path.exists(CASES_DATE_DIR):
-        os.makedirs(CASES_DATE_DIR, exist_ok=True)
-        return []
-
-    files = os.listdir(CASES_DATE_DIR)
-    xlsx_files = [f for f in files if f.lower().endswith('.xlsx')]
-    return xlsx_files
-
 
 def create_test_launcher_sheet(parent_frame, widget_dict):
     """
@@ -57,20 +42,27 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
     title_label = ttk.Label(main_frame, text="测试启动", font=("Arial", 16, "bold"))
     title_label.pack(anchor="center", pady=(0, 20))
 
-    # 创建文件选择区域
-    file_frame = ttk.LabelFrame(main_frame, text="选择测试用例文件", padding=(10, 5))
-    file_frame.pack(fill="both", expand=True, pady=(0, 15))
+    # 创建左右分割框架
+    split_frame = ttk.Frame(main_frame)
+    split_frame.pack(fill=tk.BOTH, expand=True)
+
+    # 左侧框架
+    left_frame = ttk.Frame(split_frame)
+    left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
+
+    # 左侧上部：选择测试用例
+    select_frame = ttk.LabelFrame(left_frame, text="选择测试用例", padding=(10, 5))
+    select_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
 
     # 创建目录树框架
-    dir_tree_frame = ttk.Frame(file_frame)
-    dir_tree_frame.pack(fill="both", expand=True, pady=5)
+    dir_tree_frame = ttk.Frame(select_frame)
+    dir_tree_frame.pack(fill=tk.BOTH, expand=True, pady=5)
 
-    # 创建目录树
     dir_tree_scrollbar = ttk.Scrollbar(dir_tree_frame)
     dir_tree_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     dir_tree = ttk.Treeview(dir_tree_frame, yscrollcommand=dir_tree_scrollbar.set)
-    dir_tree.pack(side=tk.LEFT, fill="both", expand=True)
+    dir_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     dir_tree_scrollbar.config(command=dir_tree.yview)
 
     # 配置目录树
@@ -136,6 +128,13 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
 
         item = selected_items[0]
         path = dir_tree.item(item, "values")[0]
+
+        # 如果选择的是文件，取消选择
+        if not os.path.isdir(path):
+            dir_tree.selection_remove(item)
+            messagebox.showwarning("提示", "只能选择目录，不能选择文件")
+            return
+
         current_path[0] = path
 
     dir_tree.bind("<<TreeviewSelect>>", on_dir_tree_select)
@@ -154,9 +153,94 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
     dir_tree.bind("<<TreeviewOpen>>", on_tree_expand)
     dir_tree.bind("<<TreeviewClose>>", on_tree_collapse)
 
-    # 按钮区域
-    buttons_frame = ttk.Frame(file_frame)
-    buttons_frame.pack(fill="x", pady=10)
+    # 选择按钮区域
+    select_buttons_frame = ttk.Frame(select_frame)
+    select_buttons_frame.pack(fill=tk.X, pady=5)
+
+    def get_relative_path(full_path):
+        """
+        获取相对于根目录的路径
+        """
+        return os.path.relpath(full_path, DIR_TREE_ROOT_PATH)
+
+    def add_to_selected():
+        selected_items = dir_tree.selection()
+        if not selected_items:
+            messagebox.showwarning("提示", "请先选择要添加的目录")
+            return
+
+        for item in selected_items:
+            path = dir_tree.item(item, "values")[0]
+            name = dir_tree.item(item, "text")
+
+            # 检查是否已存在
+            exists = False
+            for child in selected_tree.get_children():
+                if selected_tree.item(child, "values")[0] == path:
+                    exists = True
+                    break
+
+            if not exists:
+                # 获取相对路径
+                rel_path = os.path.relpath(path, DIR_TREE_ROOT_PATH)
+                parts = rel_path.split(os.sep)
+
+                # 创建完整的目录结构
+                current_parent = ""
+                for part in parts:
+                    # 检查是否已存在
+                    exists = False
+                    for child in selected_tree.get_children(current_parent):
+                        if selected_tree.item(child, "text") == part:
+                            current_parent = child
+                            exists = True
+                            break
+                    if not exists:
+                        # 创建目录节点
+                        full_path = os.path.join(DIR_TREE_ROOT_PATH, *parts[:parts.index(part)+1])
+                        current_parent = selected_tree.insert(current_parent, "end", text=part, values=(full_path, "", ""))
+                        # 如果目录在展开状态中，则展开
+                        if full_path in selected_expanded_items:
+                            selected_tree.item(current_parent, open=True)
+
+                # 递归添加目录下的所有.py文件
+                def add_directory_contents(dir_path, parent=""):
+                    try:
+                        items = os.listdir(dir_path)
+                        for item in items:
+                            full_path = os.path.join(dir_path, item)
+                            if os.path.isdir(full_path):
+                                # 检查子目录是否已存在
+                                exists = False
+                                for child in selected_tree.get_children(parent):
+                                    if selected_tree.item(child, "text") == item:
+                                        exists = True
+                                        break
+                                if not exists:
+                                    # 创建子目录节点
+                                    sub_node_id = selected_tree.insert(parent, "end", text=item, values=(full_path, "", ""))
+                                    add_directory_contents(full_path, sub_node_id)
+                                    # 如果目录在展开状态中，则展开
+                                    if full_path in selected_expanded_items:
+                                        selected_tree.item(sub_node_id, open=True)
+                            elif item.endswith('.py'):
+                                # 检查文件是否已存在
+                                exists = False
+                                for child in selected_tree.get_children(parent):
+                                    if selected_tree.item(child, "text") == item:
+                                        exists = True
+                                        break
+                                if not exists:
+                                    # 获取文件大小和修改时间
+                                    size = os.path.getsize(full_path)
+                                    modified_time = os.path.getmtime(full_path)
+                                    modified_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(modified_time))
+                                    size_str = f"{size/1024:.1f} KB" if size < 1024*1024 else f"{size/1024/1024:.1f} MB"
+                                    selected_tree.insert(parent, "end", text=item, values=(full_path, size_str, modified_str))
+                    except Exception as e:
+                        print(f"添加目录内容出错: {e}")
+
+                add_directory_contents(path, current_parent)
 
     def refresh_dir_tree():
         """
@@ -176,16 +260,175 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
                     dir_tree.item(item, open=True)
                     break
 
-    refresh_button = ttk.Button(buttons_frame, text="刷新目录", command=refresh_dir_tree, width=15)
+    add_button = ttk.Button(select_buttons_frame, text="添加到已选择", command=add_to_selected, width=15)
+    add_button.pack(side=tk.LEFT, padx=5)
+
+    refresh_button = ttk.Button(select_buttons_frame, text="刷新目录", command=refresh_dir_tree, width=15)
     refresh_button.pack(side=tk.LEFT, padx=5)
 
+    # 左侧下部：已选择的测试用例
+    selected_frame = ttk.LabelFrame(left_frame, text="已选择的测试用例", padding=(10, 5))
+    selected_frame.pack(fill=tk.BOTH, expand=True)
+
+    # 已选择目录树框架
+    selected_tree_frame = ttk.Frame(selected_frame)
+    selected_tree_frame.pack(fill=tk.BOTH, expand=True, pady=5)
+
+    selected_tree_scrollbar = ttk.Scrollbar(selected_tree_frame)
+    selected_tree_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    selected_tree = ttk.Treeview(selected_tree_frame, yscrollcommand=selected_tree_scrollbar.set)
+    selected_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    selected_tree_scrollbar.config(command=selected_tree.yview)
+
+    # 配置已选择目录树
+    selected_tree["columns"] = ("path", "size", "modified")
+    selected_tree.column("#0", width=300, minwidth=200)
+    selected_tree.column("path", width=0, stretch=tk.NO)
+    selected_tree.column("size", width=100)
+    selected_tree.column("modified", width=150)
+    selected_tree.heading("#0", text="名称")
+    selected_tree.heading("path", text="路径")
+    selected_tree.heading("size", text="大小")
+    selected_tree.heading("modified", text="修改日期")
+
+    # 设置已选择目录树样式
+    style.configure("Selected.Treeview", background="#2b2b2b", foreground="white", fieldbackground="#2b2b2b")
+    style.configure("Selected.Treeview.Heading", background="#3c3f41", foreground="white")
+    style.map("Selected.Treeview", background=[("selected", "#4a6ea9")])
+    selected_tree.configure(style="Selected.Treeview")
+
+    # 存储已选择目录树的展开状态
+    selected_expanded_items = set()
+
+    # 已选择目录树展开/折叠事件
+    def on_selected_tree_expand(event):
+        item = selected_tree.focus()
+        path = selected_tree.item(item, "values")[0]
+        selected_expanded_items.add(path)
+
+    def on_selected_tree_collapse(event):
+        item = selected_tree.focus()
+        path = selected_tree.item(item, "values")[0]
+        selected_expanded_items.discard(path)
+
+    selected_tree.bind("<<TreeviewOpen>>", on_selected_tree_expand)
+    selected_tree.bind("<<TreeviewClose>>", on_selected_tree_collapse)
+
+    # 已选择目录树按钮区域
+    selected_buttons_frame = ttk.Frame(selected_frame)
+    selected_buttons_frame.pack(fill=tk.X, pady=5)
+
+    def remove_selected():
+        selected_items = selected_tree.selection()
+        for item in selected_items:
+            selected_tree.delete(item)
+
+    def confirm_selection():
+        """
+        确认选择并输出已选择的项目列表
+        """
+        selected_items = []
+
+        def collect_items(item_id, parent_path=""):
+            # 获取项目信息
+            item_text = selected_tree.item(item_id, "text")
+            item_values = selected_tree.item(item_id, "values")
+            item_path = item_values[0]
+
+            # 构建完整路径
+            if parent_path:
+                full_path = os.path.join(parent_path, item_text)
+            else:
+                full_path = item_text
+
+            # 如果是目录，添加到选中列表
+            if os.path.isdir(item_path):
+                selected_items.append({
+                    "type": "directory",
+                    "name": item_text,
+                    "path": item_path,
+                    "full_path": full_path,
+                    "depth": len(os.path.relpath(item_path, DIR_TREE_ROOT_PATH).split(os.sep))
+                })
+
+            # 递归检查子节点
+            for child_id in selected_tree.get_children(item_id):
+                collect_items(child_id, full_path)
+
+        # 收集所有项目
+        for item_id in selected_tree.get_children():
+            collect_items(item_id)
+
+        # 构建输出列表
+        output_list = []
+
+        # 找出最深的目录层级
+        max_depth = max(item["depth"] for item in selected_items)
+
+        # 只输出最深的目录
+        for item in selected_items:
+            if item["depth"] == max_depth:
+                rel_path = os.path.relpath(item["path"], DIR_TREE_ROOT_PATH)
+                full_path = os.path.join("cases_run", rel_path)
+                output_list.append(full_path)
+
+        # 输出已选择的项目列表
+        print("\n已选择的项目列表：")
+        print(output_list)
+
+        # 将路径写入pytest.ini
+        try:
+            # 使用home变量获取项目根目录
+            pytest_ini_path = os.path.join(home, "pytest.ini")
+
+            # 读取pytest.ini文件
+            with open(pytest_ini_path, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+
+            # 查找testpaths行
+            testpaths_index = -1
+            for i, line in enumerate(lines):
+                if line.strip().startswith("testpaths"):
+                    testpaths_index = i
+                    break
+
+            # 构建新的testpaths行
+            testpaths_line = f"testpaths = {' '.join(output_list)}\n"
+
+            # 如果找到testpaths行，替换它；否则添加到文件末尾
+            if testpaths_index != -1:
+                lines[testpaths_index] = testpaths_line
+            else:
+                lines.append("\n" + testpaths_line)
+
+            # 写入pytest.ini文件
+            with open(pytest_ini_path, "w", encoding="utf-8") as f:
+                f.writelines(lines)
+
+            print("\n已更新pytest.ini文件")
+        except Exception as e:
+            print(f"\n更新pytest.ini文件时出错: {e}")
+
+        return output_list
+
+    remove_button = ttk.Button(selected_buttons_frame, text="取消选择", command=remove_selected, width=15)
+    remove_button.pack(side=tk.LEFT, padx=5)
+
+    confirm_button = ttk.Button(selected_buttons_frame, text="确定", command=confirm_selection, width=15)
+    confirm_button.pack(side=tk.LEFT, padx=5)
+
+    # 右侧框架
+    right_frame = ttk.Frame(split_frame)
+    right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+
     # 创建参数配置区域
-    param_frame = ttk.LabelFrame(main_frame, text="测试参数配置", padding=(10, 5))
-    param_frame.pack(fill="x", pady=(0, 15))
+    param_frame = ttk.LabelFrame(right_frame, text="测试参数配置", padding=(10, 5))
+    param_frame.pack(fill=tk.X, pady=(0, 15))
 
     # 添加参数配置选项
     options_frame = ttk.Frame(param_frame)
-    options_frame.pack(fill="x", pady=5)
+    options_frame.pack(fill=tk.X, pady=5)
 
     # 添加-v选项（详细输出）
     verbose_var = tk.BooleanVar(value=True)
@@ -202,106 +445,15 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
     html_report_check = ttk.Checkbutton(options_frame, text="--html (生成HTML报告)", variable=html_report_var)
     html_report_check.pack(side=tk.LEFT, padx=10)
 
-    # 创建执行区域
-    execution_frame = ttk.LabelFrame(main_frame, text="执行测试", padding=(10, 5))
-    execution_frame.pack(fill="x", pady=(0, 15))
+    # 添加提交按钮区域
+    submit_frame = ttk.Frame(right_frame)
+    submit_frame.pack(fill=tk.X, pady=20)
 
-    # 添加状态标签
-    status_label = ttk.Label(execution_frame, text="就绪")
-    status_label.pack(pady=5)
-
-    # 添加输出文本框
-    output_frame = ttk.Frame(execution_frame)
-    output_frame.pack(fill="both", expand=True, pady=5)
-
-    output_scrollbar = ttk.Scrollbar(output_frame)
-    output_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-
-    output_text = tk.Text(output_frame, yscrollcommand=output_scrollbar.set, height=10, wrap=tk.WORD)
-    output_text.pack(side=tk.LEFT, fill="both", expand=True)
-    output_scrollbar.config(command=output_text.yview)
-
-    widget_dict['output_text'] = output_text
-    widget_dict['status_label'] = status_label
-
-    # 添加执行按钮
     def start_execution():
         """
         开始执行测试
         """
-        selected_items = dir_tree.selection()
-        if not selected_items:
-            messagebox.showwarning("提示", "请先选择要执行的测试用例文件")
-            return
-
-        item = selected_items[0]
-        file_path = dir_tree.item(item, "values")[0]
-        file_name = dir_tree.item(item, "text")
-
-        # 更新状态标签
-        status_label.config(text="正在执行...")
-        output_text.delete(1.0, tk.END)
-        output_text.insert(tk.END, f"开始执行测试用例: {file_name}\n\n")
-
-        # 构建pytest命令
-        cmd = ["pytest"]
-
-        # 添加参数
-        if verbose_var.get():
-            cmd.append("-v")
-
-        if show_output_var.get():
-            cmd.append("-s")
-
-        if html_report_var.get():
-            report_path = os.path.join(REPORTS_DIR, f"{os.path.splitext(file_name)[0]}_report.html")
-            os.makedirs(os.path.dirname(report_path), exist_ok=True)
-            cmd.extend(["--html", report_path])
-
-        # 添加测试文件路径
-        cmd.append(file_path)
-
-        # 在新线程中执行命令，避免界面卡死
-        def run_command():
-            try:
-                process = subprocess.Popen(
-                    cmd,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    text=True,
-                    bufsize=1,
-                    universal_newlines=True
-                )
-
-                # 实时读取输出
-                for line in process.stdout:
-                    output_text.insert(tk.END, line)
-                    output_text.see(tk.END)
-                    output_text.update_idletasks()
-
-                process.wait()
-
-                # 更新状态标签
-                if process.returncode == 0:
-                    status_label.config(text="执行完成")
-                    messagebox.showinfo("成功", f"测试用例 {file_name} 执行完成")
-                else:
-                    status_label.config(text="执行失败")
-                    messagebox.showerror("错误", f"测试用例 {file_name} 执行失败")
-
-            except Exception as e:
-                # 更新状态标签
-                status_label.config(text="执行失败")
-                error_msg = f"执行测试用例时出错: {e}"
-                output_text.insert(tk.END, f"\n{error_msg}\n")
-                messagebox.showerror("错误", error_msg)
-
-        # 启动线程
-        threading.Thread(target=run_command, daemon=True).start()
-
-    # 添加提交按钮区域
-    submit_frame = ttk.Frame(main_frame)
-    submit_frame.pack(fill="x", pady=20)
+        start_run_auto_test()
 
     # 执行按钮
     submit_button = ttk.Button(
@@ -313,13 +465,4 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
     )
     submit_button.pack(side=tk.LEFT, padx=10)
 
-    # 取消按钮 - 清空选择
-    cancel_button = ttk.Button(
-        submit_frame,
-        text="取消选择",
-        command=lambda: dir_tree.selection_clear(),
-        width=15
-    )
-    cancel_button.pack(side=tk.LEFT, padx=10)
-
-    return widget_dict 
+    return widget_dict

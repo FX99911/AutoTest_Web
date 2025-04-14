@@ -1,4 +1,4 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"说明：这是一个说明描述，描述写这里","60995","测试用例名：test_01_正确_登陆","cases_run.测试的项目.首页.登陆","Fri Apr 11 22:25:03 CST 2025","passed","Fri Apr 11 22:26:04 CST 2025","Test_Template","test_01_正确_登陆","",""
-"说明：这是一个说明描述，描述写这里","3831","测试用例名：test_02_QQ_登陆","cases_run.测试的项目.首页.登陆","Fri Apr 11 22:26:04 CST 2025","passed","Fri Apr 11 22:26:08 CST 2025","Test_Template","test_02_QQ_登陆","",""
-"说明：这是一个说明描述，描述写这里","3026","测试用例名：test_03_百度_登陆","cases_run.测试的项目.首页.登陆","Fri Apr 11 22:26:08 CST 2025","passed","Fri Apr 11 22:26:11 CST 2025","Test_Template","test_03_百度_登陆","",""
+"说明：这是一个说明描述，描述写这里","3696","测试用例名：test_03_百度_登陆","cases_run.六代战斗机项目.导航.导航到-美国","Mon Apr 14 17:18:11 CST 2025","passed","Mon Apr 14 17:18:14 CST 2025","Test_Template","test_03_百度_登陆","",""
+"说明：这是一个说明描述，描述写这里","7605","测试用例名：test_01_正确_登陆","cases_run.六代战斗机项目.导航.导航到-美国","Mon Apr 14 17:17:59 CST 2025","passed","Mon Apr 14 17:18:06 CST 2025","Test_Template","test_01_正确_登陆","",""
+"说明：这是一个说明描述，描述写这里","4605","测试用例名：test_02_QQ_登陆","cases_run.六代战斗机项目.导航.导航到-美国","Mon Apr 14 17:18:06 CST 2025","passed","Mon Apr 14 17:18:11 CST 2025","Test_Template","test_02_QQ_登陆","",""
