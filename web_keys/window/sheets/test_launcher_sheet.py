@@ -623,7 +623,7 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
             try:
                 # 使用subprocess.Popen启动start_run_auto_test
                 current_process = subprocess.Popen(
-                    ["python", "-c", "from run_main import start_run_auto_test; start_run_auto_test()"],
+                    ["python3", "-c", "from run_main import start_run_auto_test; start_run_auto_test()"],
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
                     text=True,

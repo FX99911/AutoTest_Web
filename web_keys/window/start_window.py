@@ -14,10 +14,11 @@ import os
 from web_keys.environment_info.montage_url import home
 
 # 导入四个sheet页模块
-from sheets.config_sheet import create_config_sheet, save_config
-from sheets.file_management_sheet import create_file_management_sheet, upload_selected_files
-from sheets.test_case_import_sheet import create_test_case_import_sheet
-from sheets.test_launcher_sheet import create_test_launcher_sheet
+from web_keys.window.sheets.config_sheet import create_config_sheet, save_config
+from web_keys.window.sheets.file_management_sheet import create_file_management_sheet, upload_selected_files
+from web_keys.window.sheets.test_case_import_sheet import create_test_case_import_sheet
+from web_keys.window.sheets.test_launcher_sheet import create_test_launcher_sheet
+from web_keys.window.sheets.report_sheet import create_report_sheet
 
 
 def create_widgets(root, is_closed_by_x):
@@ -58,6 +59,10 @@ def create_widgets(root, is_closed_by_x):
     create_test_case_import_sheet(test_case_import_frame, widget_dict)
     create_test_launcher_sheet(test_launcher_frame, widget_dict)
 
+    # 创建测试报告页面
+    report_sheet = create_report_sheet(notebook)
+    notebook.add(report_sheet, text="测试报告")
+
     # 状态栏 - 显示操作状态
     status_frame = ttk.Frame(root)
     status_frame.pack(fill=tk.X, side=tk.BOTTOM)
@@ -91,7 +96,7 @@ def start_window_config():
     # 创建主窗口
     root = tk.Tk()
     root.title("自动化测试配置")
-    root.geometry("1200x800")  # 设置窗口初始大小
+    root.geometry("900x700")  # 设置窗口初始大小
 
     # 设置窗口图标（如果有）
     try:
@@ -153,4 +158,5 @@ def start_window_config():
 
 # 当作为主程序运行时，启动配置窗口
 if __name__ == "__main__":
-    start_window_config() 
+
+    start_window_config()
