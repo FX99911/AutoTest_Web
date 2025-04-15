@@ -125,8 +125,8 @@ class Keys:
     #             print(f"【出现错误】打开浏览器失败: {e}")
     #
     #
-
-
+    def start_chrome_n(self):
+        self.driver = BrowserManager().start_chrome_1()
 
     def start_chrome(self):
         self.driver = BrowserManager().start_browser()

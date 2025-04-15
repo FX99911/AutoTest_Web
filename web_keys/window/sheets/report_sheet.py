@@ -129,7 +129,7 @@ def create_report_sheet(parent):
                 import shutil
                 shutil.rmtree(report_dir)
                 load_reports()  # 重新加载数据
-                tk.messagebox.showinfo("成功", "报告已删除")
+                # tk.messagebox.showinfo("成功", "报告已删除")
         except Exception as e:
             tk.messagebox.showerror("错误", f"删除报告失败: {str(e)}")
 
@@ -153,7 +153,7 @@ def create_report_sheet(parent):
                         tk.messagebox.showerror("错误", f"打开报告失败: {str(e)}")
                 else:  # 点击"删除"
                     if tk.messagebox.askyesno("确认", "确定要删除此报告吗？"):
-                        delete_report(report['path'])
+                         delete_report(report['path'])
 
     # 绑定事件
     tree.bind("<Button-1>", on_click)

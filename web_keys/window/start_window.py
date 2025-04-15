@@ -96,7 +96,7 @@ def start_window_config():
     # 创建主窗口
     root = tk.Tk()
     root.title("自动化测试配置")
-    root.geometry("900x700")  # 设置窗口初始大小
+    root.geometry("1000x900")  # 设置窗口初始大小
 
     # 设置窗口图标（如果有）
     try:

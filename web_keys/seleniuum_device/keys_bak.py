@@ -101,6 +101,12 @@ class Keys:
                 self.opt1.add_experimental_option('detach', True)
                 # 设置浏览器缩放比例70%
                 self.opt1.add_argument('--force-device-scale-factor=0.7')
+                if is_h5 == 'yes':
+                    # 配置模拟移动设备
+                    mobile_emulation = {
+                        "deviceName": "iPhone 14 Pro Max"
+                    }
+                    self.opt1.add_experimental_option("mobileEmulation", mobile_emulation)
                 # 配置启动文件路径，并且使用opt1的设置，启动浏览器
                 self.driver = webdriver.Chrome(service=Service(Win_chromedriver_url), options=self.opt1)
                 # 隐性等待时间配置10s
@@ -115,6 +121,12 @@ class Keys:
                 self.opt1 = Options()
                 # 保持浏览器打开状态
                 self.opt1.add_experimental_option('detach', True)
+                if is_h5 == 'yes':
+                    # 配置模拟移动设备
+                    mobile_emulation = {
+                        "deviceName": "iPhone 14 Pro Max"
+                    }
+                    self.opt1.add_experimental_option("mobileEmulation", mobile_emulation)
                 # 配置启动文件路径，并且使用opt1的设置，启动浏览器
                 self.driver = webdriver.Chrome(service=Service(Mac_chromedriver_url), options=self.opt1)
                 # 隐性等待时间配置10s

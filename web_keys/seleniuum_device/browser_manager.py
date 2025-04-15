@@ -1,4 +1,3 @@
-
 import json
 import socket
 from selenium import webdriver
@@ -111,6 +110,18 @@ class BrowserManager:
             chrome_options.add_argument('--disable-gpu')  # 禁用GPU加速
             chrome_options.add_argument('--no-sandbox')  # 禁用沙盒模式
 
+            # 根据是否为H5项目设置不同的选项
+            if self.is_h5.lower() == 'yes':
+                print(">>> 检测到H5项目，设置移动设备模拟...")
+                # 设置移动设备模拟
+                mobile_emulation = {
+                    "deviceMetrics": {"width": 430, "height": 930, "pixelRatio": 2.0},
+                    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
+                }
+                chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+                # 设置窗口大小与设备尺寸一致
+                chrome_options.add_argument('--window-size=500,1000')
+
             if self._is_port_in_use():
                 # 连接到已运行的浏览器
                 print(">>> 检测到已运行的浏览器，正在连接...")
@@ -143,6 +154,8 @@ class BrowserManager:
             BrowserManager.driver = None
             self._is_browser_running = False
             print(">>> 浏览器已关闭")
+        else:
+            self.driver.quit()
 
     def is_browser_running(self):
         """
@@ -161,6 +174,59 @@ class BrowserManager:
             self.driver.get(url)
         except Exception as e:
             print(f"错误：打开URL失败 - {str(e)}")
+
+
+    def start_chrome_1(self):
+        """
+        启动Chrome浏览器并返回WebDriver实例
+        根据配置文件中的pc_type决定使用哪个驱动路径
+
+        Returns:
+            WebDriver: 配置好的Chrome WebDriver实例
+        """
+        if self.pc_type == 'window':
+            try:
+                # 创建设置浏览器对象
+                self.opt1 = Options()
+                # 禁用沙盒模式(增加兼容性)
+                self.opt1.add_argument('--no-sandbox')
+                # 保持浏览器打开状态
+                self.opt1.add_experimental_option('detach', True)
+                # 设置浏览器缩放比例70%
+                self.opt1.add_argument('--force-device-scale-factor=0.7')
+                if self.is_h5 == 'yes':
+                    # 配置模拟移动设备
+                    mobile_emulation = {
+                        "deviceName": "iPhone 14 Pro Max"
+                    }
+                    self.opt1.add_experimental_option("mobileEmulation", mobile_emulation)
+                # 配置启动文件路径，并且使用opt1的设置，启动浏览器
+                self.driver = webdriver.Chrome(service=Service(self.Win_chromedriver_url), options=self.opt1)
+                # 隐性等待时间配置10s
+                self.driver.implicitly_wait(10)
+                return self.driver
+            except Exception as e:
+                print(f"【error:】打开浏览器失败: {e}")
+
+        elif self.pc_type == 'mac':
+            try:
+                # 创建设置浏览器对象
+                self.opt1 = Options()
+                # 保持浏览器打开状态
+                self.opt1.add_experimental_option('detach', True)
+                if self.is_h5 == 'yes':
+                    # 配置模拟移动设备
+                    mobile_emulation = {
+                        "deviceName": "iPhone 14 Pro Max"
+                    }
+                    self.opt1.add_experimental_option("mobileEmulation", mobile_emulation)
+                # 配置启动文件路径，并且使用opt1的设置，启动浏览器
+                self.driver = webdriver.Chrome(service=Service(self.Mac_chromedriver_url), options=self.opt1)
+                # 隐性等待时间配置10s
+                self.driver.implicitly_wait(10)
+                return self.driver
+            except Exception as e:
+                print(f"【出现错误】打开浏览器失败: {e}")
 
 # 创建全局浏览器管理器实例
 browser_manager = BrowserManager.get_instance()
