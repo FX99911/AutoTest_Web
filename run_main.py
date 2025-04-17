@@ -1,3 +1,5 @@
+import shutil
+
 import pytest
 import subprocess
 import time
@@ -19,6 +21,11 @@ def start_run_auto_test():
 
     # 等待一段时间，确保测试结果文件生成
     time.sleep(3)
+    # 环境信息
+    pcinfo_path = os.path.join(home, 'environment.xml')
+    reports_temp_path = os.path.join(home, 'temps')
+    shutil.copy(pcinfo_path,reports_temp_path)
+    time.sleep(1)
 
     # 构建命令列表
     # 此列表为 allure generate 命令及其参数，用于生成 Allure 报告
@@ -35,7 +42,7 @@ def start_run_auto_test():
         # check=True 表示如果命令执行失败（返回非零退出码），则抛出 CalledProcessError 异常
         # text=True 表示以文本模式处理输入输出
         # capture_output=True 表示捕获命令的标准输出和标准错误输出
-        result = subprocess.run(command, check=True, text=True, capture_output=True)
+        result = subprocess.run(command, check=True, text=True, capture_output=True,encoding='utf-8')
         print("命令执行成功，输出信息：")
         print(result.stdout)
     except subprocess.CalledProcessError as e:
@@ -55,4 +62,4 @@ def start_run_auto_test():
     return reports_record_path
 
 
-# start_run_auto_test()
+start_run_auto_test()

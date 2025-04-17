@@ -17,6 +17,7 @@ import psutil
 import re
 import shutil
 from web_keys.environment_info.montage_url import home
+from web_keys.seleniuum_device.browser_manager import BrowserManager
 from run_main import start_run_auto_test
 
 # 测试用例文件目录路径
@@ -617,18 +618,44 @@ def create_test_launcher_sheet(parent_frame, widget_dict):
         # 清空日志
         log_text.delete(1.0, tk.END)
 
+        print('设备类型=',BrowserManager.pc_type)
         # 启动测试进程
         def run_test():
+            print()
             global current_process
             try:
-                # 使用subprocess.Popen启动start_run_auto_test
-                current_process = subprocess.Popen(
-                    ["python3", "-c", "from run_main import start_run_auto_test; start_run_auto_test()"],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    text=True,
-                    bufsize=1
-                )
+                if BrowserManager.pc_type == 'window':
+                    # 使用subprocess.Popen启动start_run_auto_test
+                    current_process = subprocess.Popen(
+                        ["python", "-c", "from run_main import start_run_auto_test; start_run_auto_test()"],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        text=True,
+                        encoding='utf-8',  # 指定编码为 UTF-8
+                        bufsize=1
+                    )
+                elif BrowserManager.pc_type == 'mac':
+                    # 使用subprocess.Popen启动start_run_auto_test
+                    current_process = subprocess.Popen(
+                        ["python3", "-c", "from run_main import start_run_auto_test; start_run_auto_test()"],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        text=True,
+                        encoding='utf-8',  # 指定编码为 UTF-8
+                        bufsize=1
+                    )
+        # # 启动测试进程
+        # def run_test():
+        #     global current_process
+        #     try:
+        #         # 使用subprocess.Popen启动start_run_auto_test
+        #         current_process = subprocess.Popen(
+        #             ["python3", "-c", "from run_main import start_run_auto_test; start_run_auto_test()"],
+        #             stdout=subprocess.PIPE,
+        #             stderr=subprocess.STDOUT,
+        #             text=True,
+        #             bufsize=1
+        #         )
 
                 # 实时读取输出
                 for line in current_process.stdout:
