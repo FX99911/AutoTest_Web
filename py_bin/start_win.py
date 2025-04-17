@@ -2,6 +2,7 @@ import subprocess
 import os
 
 
+
 def get_project_root_path():
     """
     自动获取项目根目录
@@ -54,8 +55,9 @@ new_env['PYTHONPATH'] = new_pythonpath
 python_file_path = os.path.join(project_root, 'web_keys', 'window', 'start_window.py')
 
 try:
+
     # 执行 Python 文件，使用通用的 python3 命令
-    result = subprocess.run(['python3', python_file_path], env=new_env, capture_output=True, text=True, check=True)
+    result = subprocess.run(['python', python_file_path], env=new_env, capture_output=True, text=True, check=True)
     print("执行成功，输出如下：")
     print(result.stdout)
 except subprocess.CalledProcessError as e:
