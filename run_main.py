@@ -72,4 +72,4 @@ def start_run_auto_test():
     return reports_record_path
 
 
-start_run_auto_test()
+# start_run_auto_test()
