@@ -1,11 +1,13 @@
 import subprocess
 import os
+from web_keys.environment_info.montage_url import home
 
 # 设置项目根目录，根据实际情况修改
-project_root = '/Users/wang/PycharmProjects/AtouTest_Web'
+project_root = home
 
 # 获取当前的 PYTHONPATH
 current_pythonpath = os.environ.get('PYTHONPATH', '')
+print('current_pythonpath',current_pythonpath)
 
 # 如果 PYTHONPATH 不为空，添加分隔符
 if current_pythonpath:
