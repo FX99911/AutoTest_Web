@@ -42,11 +42,15 @@ def start_run_auto_test():
         print(f"命令执行失败，错误信息：{e.stderr}")
 
     # 创建一个时间目录：
-    reports_record_path = create_timestamp_dir(f'{home}/reports_record',run_time)
+    # reports_record_path = create_timestamp_dir(f'{home}/reports_record',run_time)
+    reports_record_path = os.path.join(home, 'reports_record', run_time)
 
     time.sleep(1)
     # 复制报告到这
-    copy_directory(f'{home}/reports',reports_record_path)
+    rp_path = os.path.join(home, 'reports')
+
+    copy_directory(rp_path,reports_record_path)
+
     print(f'测试报告记录在：{reports_record_path}')
     return reports_record_path
 

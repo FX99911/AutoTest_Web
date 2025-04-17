@@ -12,4 +12,5 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple python-dotenv~=1.1.0
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple allure-pytest
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple allure-python-commons~=2.13.5
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas
+pip install psutil -i https://mirrors.aliyun.com/pypi/simple/
 
