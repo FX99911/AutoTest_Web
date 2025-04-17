@@ -1,0 +1,4 @@
+INFO - 2025-04-17 21:33:26,863 - log.py:47 - [log:<module>] - 这是info的日志信息
+ERROR - 2025-04-17 21:33:26,863 - log.py:48 - [log:<module>] - 这是err
+DEBUG - 2025-04-17 21:33:26,863 - log.py:49 - [log:<module>] - 这是debug
+WARNING - 2025-04-17 21:33:26,863 - log.py:50 - [log:<module>] - 这是警告

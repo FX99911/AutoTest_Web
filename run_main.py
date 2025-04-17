@@ -4,6 +4,7 @@ import pytest
 import subprocess
 import time
 from web_keys.file_tool.file_utils import *
+from web_keys.seleniuum_device.browser_manager import BrowserManager
 from web_keys.environment_info.montage_url import home
 
 # 获取执行开始时间：
@@ -21,11 +22,19 @@ def start_run_auto_test():
 
     # 等待一段时间，确保测试结果文件生成
     time.sleep(3)
+
     # 环境信息
     pcinfo_path = os.path.join(home, 'environment.xml')
     reports_temp_path = os.path.join(home, 'temps')
     shutil.copy(pcinfo_path,reports_temp_path)
     time.sleep(1)
+
+    if BrowserManager.pc_type == 'mac':
+        allure_path = os.path.join(home, 'allure','allure-2.33.0', 'bin', 'allure')
+
+    elif BrowserManager.pc_type == 'window':
+        allure_path = os.path.join(home, 'allure','allure-2.33.0', 'bin', 'allure.bat')
+
 
     # 构建命令列表
     # 此列表为 allure generate 命令及其参数，用于生成 Allure 报告
@@ -34,7 +43,8 @@ def start_run_auto_test():
     # -o 指定输出目录，这里有两个输出目录，分别是变量 output_directory 和 ./reports
     # ./temps 也是测试结果的来源目录
     # --clean 表示在生成报告前清空输出目录
-    command = ['allure', 'generate', '--single-file', 'allure-results','./temps', '-o', './reports', '--clean']
+    # command = ['allure', 'generate', '--single-file', 'allure-results','./temps', '-o', './reports', '--clean']
+    command = [allure_path, 'generate', '--single-file','./temps', '-o', './reports', '--clean']
 
     try:
         # 执行命令
@@ -51,8 +61,8 @@ def start_run_auto_test():
     # 创建一个时间目录：
     # reports_record_path = create_timestamp_dir(f'{home}/reports_record',run_time)
     reports_record_path = os.path.join(home, 'reports_record', run_time)
-
-    time.sleep(1)
+    print('等待 3 秒')
+    time.sleep(3)
     # 复制报告到这
     rp_path = os.path.join(home, 'reports')
 

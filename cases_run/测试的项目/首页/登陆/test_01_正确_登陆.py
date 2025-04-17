@@ -2,6 +2,7 @@ import os
 import time
 import allure
 from web_keys.seleniuum_device.keys import Keys
+from logs_py.log import logs
 from web_keys.read_excel.dist_to_variable import convert_dict_to_variables, get_all_steps
 from web_keys.template_method.get_now_file_name import get_now_file_name
 from web_keys.read_excel.modify_excel_dict import  convert_list_to_by

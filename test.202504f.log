@@ -1,0 +1,21 @@
+INFO - 2025-04-17 21:46:25,719 - log.py:67 - [log:<module>] - 这是info的日志信息
+ERROR - 2025-04-17 21:46:25,719 - log.py:68 - [log:<module>] - 这是err
+DEBUG - 2025-04-17 21:46:25,720 - log.py:69 - [log:<module>] - 这是debug
+WARNING - 2025-04-17 21:46:25,720 - log.py:70 - [log:<module>] - 这是警告
+[32m INFO - 2025-04-17 21:46:44,642 - log.py:67 - [log:<module>] - 这是info的日志信息[0m
+[31m ERROR - 2025-04-17 21:46:44,642 - log.py:68 - [log:<module>] - 这是err[0m
+[36m DEBUG - 2025-04-17 21:46:44,642 - log.py:69 - [log:<module>] - 这是debug[0m
+[33m WARNING - 2025-04-17 21:46:44,642 - log.py:70 - [log:<module>] - 这是警告[0m
+INFO - 2025-04-17 21:47:17,776 - log.py:67 - [log:<module>] - 这是info的日志信息
+ERROR - 2025-04-17 21:47:17,776 - log.py:68 - [log:<module>] - 这是err
+DEBUG - 2025-04-17 21:47:17,776 - log.py:69 - [log:<module>] - 这是debug
+WARNING - 2025-04-17 21:47:17,776 - log.py:70 - [log:<module>] - 这是警告
+INFO - 2025-04-17 21:48:14,339 - log.py:67 - [log:<module>] - 这是info的日志信息
+ERROR - 2025-04-17 21:48:14,339 - log.py:68 - [log:<module>] - 这是err
+DEBUG - 2025-04-17 21:48:14,339 - log.py:69 - [log:<module>] - 这是debug
+WARNING - 2025-04-17 21:48:14,339 - log.py:70 - [log:<module>] - 这是警告
+INFO - 2025-04-17 21:48:47,455 - log.py:67 - [log:<module>] - 这是info的日志信息
+ERROR - 2025-04-17 21:48:47,455 - log.py:68 - [log:<module>] - 这是err
+DEBUG - 2025-04-17 21:48:47,455 - log.py:69 - [log:<module>] - 这是debug
+WARNING - 2025-04-17 21:48:47,455 - log.py:70 - [log:<module>] - 这是警告
+CRITICAL - 2025-04-17 21:48:47,456 - log.py:71 - [log:<module>] - 这是严重

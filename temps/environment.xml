@@ -1,0 +1,16 @@
+<environment>
+    <parameter>
+        <key>系统</key>
+        <value>Mac</value>
+    </parameter>
+    <parameter>
+        <key>Python版本</key>
+        <value>python3.1.3</value>
+    </parameter>
+    <parameter>
+        <key>allure version</key>
+        <value>2.33.0</value>
+    </parameter>
+
+
+</environment>
