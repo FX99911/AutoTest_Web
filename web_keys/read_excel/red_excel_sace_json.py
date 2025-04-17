@@ -9,15 +9,18 @@ from web_keys.environment_info.montage_url import home
 
 
 # 设置默认基础路径(存放测试用例的路径)<<<<<<<<<<<
-BASE_DIR = f'{home}/cases_date' #<<<<<<<配置
+# BASE_DIR = f'{home}/cases_date' #<<<<<<<配置
+BASE_DIR = os.path.join(home, 'cases_date')
 print("--测试用例保存路径 = ", BASE_DIR)
 
 # 设置默认基础路径(存放测试用例的路径)<<<<<<<<<<<
-BASE_RUN_DIR = f'{home}/cases_run' #<<<<<<<配置
+# BASE_RUN_DIR = f'{home}/cases_run' #<<<<<<<配置
+BASE_RUN_DIR = os.path.join(home, 'cases_run')
 print("--测试用例保存路径 = ", BASE_RUN_DIR)
 
 # 设置默认基础路径(存放截图的路径)
-PICTURE_DIR = f'{home}/reports/screenshot'#<<<<<<<配置
+# PICTURE_DIR = f'{home}/reports/screenshot'#<<<<<<<配置
+PICTURE_DIR = os.path.join(home, 'reports', 'screenshot')
 print("--测试截图保存路径 = ", PICTURE_DIR)
 
 

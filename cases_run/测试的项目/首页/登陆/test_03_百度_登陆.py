@@ -15,8 +15,7 @@ project_info = {
 
 # 操作步骤
 operation_steps = {
-    '打开_url_登录': ['https://www.baidu.com', 'nan', 'nan'],
-    '关闭浏览器': ['nan', 'nan', 'nan']
+    '打开_url_登录': ['https://www.baidu.com', 'nan', 'nan']
 }
 
 # 后续可以在这里添加测试逻辑
@@ -51,7 +50,9 @@ class Test_Template(Keys):
     @allure.link(url='http://www.baidu.com', name='这是一个链接')
 
     def test_execute(self):  #这个就是定义一个(用例)，test_开头
-        self.start_chrome_n()
+        self.start_chrome() #单线程用这个
+        # self.start_chrome_n() #多线程用这个
+
         time.sleep(1)
         print('等待5秒启动浏览器')
         num = 0
@@ -63,15 +64,12 @@ class Test_Template(Keys):
             if '打开_url' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.open(step[1])
-
             elif '输入' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.input(step[1], step[2], step[3])
-
             elif '点击' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     self.click(step[1], step[2])
-
             elif '断言' in step[0] :
                 with allure.step(f'第{num}步：{step[0]}'):
                     # 加入文件附件（错误截图）

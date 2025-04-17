@@ -1,4 +1,5 @@
 import json
+import os
 import socket
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -18,9 +19,15 @@ class BrowserManager:
 
     # ----------#用根目录拼接目录url,#----------------------
     # 根据不同操作系统设置ChromeDriver路径
-    Win_chromedriver_url = f'{home}/config/chromedriver.exe'
-    Mac_chromedriver_url = f'{home}/config/chromedriver'
-    config_url = f'{home}/config/start_config.json'
+    # Win_chromedriver_url = f'{home}/config/chromedriver.exe'
+    Win_chromedriver_url = os.path.join(home, 'config', 'chromedriver.exe')
+    print(f'win浏览器驱动{Win_chromedriver_url}')
+    # Mac_chromedriver_url = f'{home}/config/chromedriver'
+    Mac_chromedriver_url = os.path.join(home, 'config', 'chromedriver')
+    print(f'mac浏览器驱动{Mac_chromedriver_url}')
+    # config_url = f'{home}/config/start_config.json'
+    config_url = os.path.join(home, 'config', 'start_config.json')
+    print(f'配置文件{config_url}')
     # ----------#去配置文件读取参数#----------------------
     try:
         # 以读取模式打开配置文件

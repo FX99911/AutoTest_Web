@@ -4,9 +4,11 @@ from web_keys.read_excel.red_excel_sace_json import *
 def run_excel_to_py(lst):
 
         # 导入文件的路径文件路径
-        excel_url = f"{home}/cases_date/"
+        # excel_url = f"{home}/cases_date/"
+        excel_url = os.path.join(home, 'cases_date/')
         # 测试用例运行模板路径
-        template_path = f"{home}/cases_date/test_case_template.py"
+        # template_path = f"{home}/cases_date/test_case_template.py"
+        template_path = os.path.join(home, 'cases_date', 'test_case_template.py')
 
 
         for x in lst: # 循环 接收的列表（文件名）

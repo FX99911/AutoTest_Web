@@ -6,7 +6,7 @@ def get_project_root_path():
     current_script_path = os.path.abspath(__file__)
     # print(f'当前绝对路径：{current_script_path}')
     # 项目根目录的名称
-    project_root_name = "AtouTest_Web"
+    project_root_name = "AutoTest_Web"
 
     # 从当前脚本路径开始，逐级向上查找项目根目录
     current_path = os.path.dirname(current_script_path)
@@ -35,4 +35,4 @@ home = get_project_root_path()
 # print(f"项目根目录的绝对路径是: {formatted_path}")
 
 
-# print(f'home={home}')
+print(f'home={home}')

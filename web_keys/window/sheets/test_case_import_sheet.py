@@ -207,8 +207,8 @@ def create_test_case_import_sheet(parent_frame, widget_dict):
             print(selected_files)
             run_excel_to_py(selected_files)  # 循环运行文件
 
-            # 显示已选择的文件数量（目前仅显示提示信息，实际导入功能待实现）
-            messagebox.showinfo("提示", f"已选择 {len(selected_files)} 个文件，导入测试用例功能暂未实现，后续开发")
+            # 显示已选择的文件数量（目前仅显示提示信息）
+            messagebox.showinfo("提示", f"已选择 {len(selected_files)} 个文件，导入成功")
 
             # 导入完成后刷新右侧目录树
             refresh_dir_tree()

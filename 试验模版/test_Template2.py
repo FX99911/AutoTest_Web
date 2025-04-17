@@ -6,7 +6,7 @@ from web_keys.read_excel.dist_to_variable import convert_dict_to_variables
 
 # 测试用例数据
 # Excel前两行数据
-first_two_rows = {'项目名称': ['测试的项目'], '模块名称': ['首页'], '测试点': ['登陆'], 'nan': ['nan']}
+first_two_rows = {'项目名称': ['测试的项目1'], '模块名称': ['首页'], '测试点': ['登陆'], 'nan': ['nan']}
 
 # 测试步骤数据
 test_data = {'打开_浏览器': ['yes', 'nan', 'nan'], '打开_url_登录': ['https://adminplus.iviewui.com/', 'nan', 'nan'], '输入_用户名': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[1]/div/div/div/input', 'admin'], '输入_密码': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[2]/div/div/div/input', 'admin'], '点击_登录按钮': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[4]/button', 'nan'], '断言': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[4]/button', '登陆成功']}

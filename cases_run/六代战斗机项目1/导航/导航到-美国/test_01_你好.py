@@ -7,7 +7,7 @@ from web_keys.template_method.get_now_file_name import get_now_file_name
 from web_keys.read_excel.modify_excel_dict import  convert_list_to_by
 # 测试用例数据
 project_info = {
-    '项目名称': ['六代战斗机项目'],
+    '项目名称': ['六代战斗机项目1'],
     '模块名称': ['导航'],
     '测试点': ['导航到-美国'],
     'nan': ['nan']
@@ -15,8 +15,11 @@ project_info = {
 
 # 操作步骤
 operation_steps = {
-    '打开_url_登录': ['https://www.baidu.com', 'nan', 'nan'],
-    '截图': ['nan', 'nan', 'nan'],
+    '打开_url_登录': ['https://adminplus.iviewui.com/', 'nan', 'nan'],
+    '输入_用户名': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[1]/div/div/div/input', 'admin'],
+    '输入_密码': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[2]/div/div/div/input', 'admin'],
+    '点击_登录按钮': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[2]/form/div[4]/button', 'nan'],
+    '断言': ['By.XPATH', '//*[@id="app"]/div/div[2]/div[1]/div/div[2]/div[1]/span/span[2]', 'Aresn'],
     '关闭浏览器': ['nan', 'nan', 'nan']
 }
 
