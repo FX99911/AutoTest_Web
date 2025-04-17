@@ -10,17 +10,19 @@ def create_report_sheet(parent):
     frame = ttk.Frame(parent)
 
     # 创建表格
-    tree = ttk.Treeview(frame, columns=("序号", "执行日期", "报告链接", "操作"), show="headings")
+    tree = ttk.Treeview(frame, columns=("序号", "执行日期", "报告链接", "查看", "删除"), show="headings")
     tree.heading("序号", text="序号")
     tree.heading("执行日期", text="执行日期")
     tree.heading("报告链接", text="报告链接")
-    tree.heading("操作", text="操作")
+    tree.heading("查看", text="查看")
+    tree.heading("删除", text="删除")
 
     # 设置列宽
-    tree.column("序号", width=50, anchor="center")
+    tree.column("序号", width=40, anchor="center")
     tree.column("执行日期", width=150, anchor="center")
     tree.column("报告链接", width=300, anchor="w")
-    tree.column("操作", width=150, anchor="center")
+    tree.column("查看", width=60, anchor="center")
+    tree.column("删除", width=60, anchor="center")
 
     # 添加滚动条
     scrollbar = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
@@ -100,7 +102,8 @@ def create_report_sheet(parent):
                 i,
                 report["date"],
                 report_url,
-                "查看 | 删除"
+                "查看",
+                "删除"
             ))
 
         update_pagination()
@@ -129,7 +132,7 @@ def create_report_sheet(parent):
                 import shutil
                 shutil.rmtree(report_dir)
                 load_reports()  # 重新加载数据
-                # tk.messagebox.showinfo("成功", "报告已删除")
+                tk.messagebox.showinfo("成功", "报告已删除")
         except Exception as e:
             tk.messagebox.showerror("错误", f"删除报告失败: {str(e)}")
 
@@ -140,20 +143,19 @@ def create_report_sheet(parent):
             item = tree.identify_row(event.y)
             values = tree.item(item, "values")
 
-            if column == "#4":  # 操作列
+            if column == "#4":  # 查看列
                 idx = int(values[0]) - 1
                 report = reports_data[idx]
-                x = event.x - tree.bbox(item, column)[0]  # 获取点击位置相对于单元格的x坐标
-
-                if x < 50:  # 点击"查看"
-                    try:
-                        report_url = f"file://{os.path.abspath(report['path'])}"
-                        webbrowser.open(report_url)
-                    except Exception as e:
-                        tk.messagebox.showerror("错误", f"打开报告失败: {str(e)}")
-                else:  # 点击"删除"
-                    if tk.messagebox.askyesno("确认", "确定要删除此报告吗？"):
-                         delete_report(report['path'])
+                try:
+                    report_url = f"file://{os.path.abspath(report['path'])}"
+                    webbrowser.open(report_url)
+                except Exception as e:
+                    tk.messagebox.showerror("错误", f"打开报告失败: {str(e)}")
+            elif column == "#5":  # 删除列
+                idx = int(values[0]) - 1
+                report = reports_data[idx]
+                if tk.messagebox.askyesno("确认", "确定要删除此报告吗？"):
+                    delete_report(report['path'])
 
     # 绑定事件
     tree.bind("<Button-1>", on_click)
