@@ -2,7 +2,6 @@ import os
 import time
 import allure
 from web_keys.seleniuum_device.keys import Keys
-from logs_py.log import logs
 from web_keys.read_excel.dist_to_variable import convert_dict_to_variables, get_all_steps
 from web_keys.template_method.get_now_file_name import get_now_file_name
 from web_keys.read_excel.modify_excel_dict import  convert_list_to_by
@@ -39,7 +38,7 @@ print(cases_name)
 # 获取列表
 all_steps = get_all_steps(operation_steps)
 
-picture_url = os.path.join("reports/cases_screenshot", project_name, test_module, test_points)
+picture_url = os.path.join('reports','cases_screenshot', project_name, test_module, test_points)
 picture_name = cases_name
 
 # =====================以下是测试用例模板====================
@@ -64,7 +63,7 @@ class Test_Template(Keys):
         num = 0
         for step in all_steps:
             step = convert_list_to_by(step)
-            print(f'当前测试步骤信息{step}')
+            print(f'当前测试步骤信息:{step}')
             num += 1
 
             if '打开_url' in step[0] :

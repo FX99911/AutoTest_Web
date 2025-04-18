@@ -339,24 +339,21 @@ class Keys:
         # 检查文件名是否未提供
         print('picture_url:',picture_url)
         print('file_name:',file_name)
-        if file_name is None:
-            # 获取当前时间并将其格式化为指定的字符串格式
-            time_str = datetime.now().strftime("%Y%m%d_%H%M%S")
-            # 若未提供文件名，使用时间戳生成一个默认的文件名
-            file_name = f"screenshot_{time_str}.png"
-        else:
-            file_name = f"{file_name}.png"
+
+        file_name = f'{file_name}.png'
 
         # 定义截图保存的目录路径，将home变量（假设已定义）和 picture_url组合起来
         screenshot_dir = os.path.join(home, picture_url)
-        print('screenshot_dir:',screenshot_dir)
+        # print('截图计划保存路径:',screenshot_dir)
 
         # 创建截图目录，如果目录已存在则不会报错
         os.makedirs(screenshot_dir, exist_ok=True)
 
         # 将截图目录和文件名组合成完整的文件路径
-        file_name_path = f'{screenshot_dir}/{file_name}'
-        print('file_path:',file_name_path)
+        # file_name_path = f'{screenshot_dir}/{file_name}'
+        file_name_path = os.path.join(screenshot_dir, file_name)
+
+        print('截图完整路径:',file_name_path)
         # 使用浏览器驱动（self.driver）截取当前页面并保存到指定的文件路径
         self.driver.save_screenshot(file_name_path)
         # 打印截图保存成功的信息，包含完整的文件路径

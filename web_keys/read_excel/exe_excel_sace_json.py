@@ -2,13 +2,17 @@ import os
 import pandas as pd
 from typing import Dict, List
 
+from web_keys.open_excel_data import create_first_directory, create_second_directory, create_third_directory, \
+    create_test_files
 from web_keys.read_excel.red_excel_sace_json import *
 from web_keys.environment_info.montage_url import home
 
 # 使用示例
 if __name__ == "__main__":
     # 文件目录
-    excel_url = f"{home}/cases_date/test_excel.xlsx"
+    # excel_url = f"{home}/cases_date/test_excel.xlsx"
+    excel_url = os.path.join(home, 'cases_date','test_excel.xlsx')
+
 
     # 读取Excel文件（前两行）
     data = read_single_excel(excel_url)

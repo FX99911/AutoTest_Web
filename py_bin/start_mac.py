@@ -39,17 +39,15 @@ project_root = get_project_root_path()
 
 # 获取当前的 PYTHONPATH
 current_pythonpath = os.environ.get('PYTHONPATH', '')
-print('current_pythonpath',current_pythonpath)
+print('当前的 PYTHONPATH:',current_pythonpath)
 
-# 如果 PYTHONPATH 不为空，添加分隔符
-if current_pythonpath:
-    new_pythonpath = f"{current_pythonpath}:{project_root}"
-else:
-    new_pythonpath = project_root
+
+new_pythonpath = project_root
 
 # 设置新的环境变量
 new_env = os.environ.copy()
 new_env['PYTHONPATH'] = new_pythonpath
+print('更新 PYTHONPATH:',new_pythonpath)
 
 # 要执行的 Python 文件路径
 python_file_path = os.path.join(project_root, 'web_keys', 'window', 'start_window.py')

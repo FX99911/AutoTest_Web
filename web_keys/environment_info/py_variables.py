@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-
+# 这个文件没啥用，但是不想删除
 def get_env_variable(variable_name='PROJECT_ROOT'):
     """
     获取指定环境变量的值，先在当前工作目录查找.env文件，若未找到则去web_keys目录查找

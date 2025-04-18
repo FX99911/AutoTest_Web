@@ -26,8 +26,8 @@ print(cases_name)
 # 获取列表
 all_steps = get_all_steps(operation_steps)
 
-picture_url = os.path.join("reports/cases_screenshot", project_name, test_module, test_points)
-picture_name = cases_name
+picture_url = os.path.join('reports','cases_screenshot', project_name, test_module, test_points)
+
 
 # =====================以下是测试用例模板====================
 ########################
@@ -51,7 +51,9 @@ class Test_Template(Keys):
         num = 0
         for step in all_steps:
             step = convert_list_to_by(step)
-            print(f'当前测试步骤信息{step}')
+            print(f'当前测试步骤信息:{step}')
+            #截图用到文件名
+            picture_name = step
             num += 1
 
             if '打开_url' in step[0] :

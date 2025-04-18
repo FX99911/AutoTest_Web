@@ -11,12 +11,6 @@ project_info = {
     'nan': ['nan']
 }
 
-project_info = {
-    '项目名称': ['测试的项目1'],
-    '模块名称': ['首页'],
-    '测试点': ['登陆'],
-    'nan': ['nan']
-}
 
 # 操作步骤
 operation_steps = {
@@ -42,7 +36,8 @@ cases_name = get_now_file_name()  #文件名
 
 # 获取列表
 
-picture_url = f'/cases_screenshot/{project_name}/{test_module}/{test_points}'
+# picture_url = f'/cases_screenshot/{project_name}/{test_module}/{test_points}'
+picture_url = os.path.join('cases_screenshot', project_name, test_module, test_points )
 picture_name = f'{cases_name}.jpg'
 # =====================以下是测试用例模板====================
 ########################
